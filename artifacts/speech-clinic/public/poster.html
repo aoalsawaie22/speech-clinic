@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Speech Clinic – Graduation Project Poster</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family:'Inter',sans-serif;
+  background:#e8eaf6;
+  min-height:100vh;
+  display:flex; justify-content:center; align-items:flex-start;
+  padding:40px 20px;
+}
+
+.poster {
+  width:1050px;
+  background:#ffffff;
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 30px 100px rgba(99,102,241,0.18), 0 0 0 1px rgba(139,92,246,0.1);
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 40%, #f093fb 80%, #f5576c 100%);
+  padding:50px 56px 44px;
+  position:relative; overflow:hidden;
+  display:flex; align-items:center; justify-content:space-between; gap:32px;
+}
+.hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 75% 40%, rgba(255,255,255,0.15) 0%, transparent 55%); }
+.hero-dots { position:absolute; inset:0; background-image:radial-gradient(rgba(255,255,255,0.18) 1px, transparent 1px); background-size:26px 26px; pointer-events:none; }
+.hero-blob1 { position:absolute; top:-50px; right:180px; width:260px; height:260px; border-radius:50%; background:rgba(255,255,255,0.07); }
+.hero-blob2 { position:absolute; bottom:-60px; right:50px;  width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,0.05); }
+
+.hero-left { position:relative; z-index:2; flex:1; }
+
+.tag-row { display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+.tag { font-size:10px; font-weight:800; letter-spacing:1.8px; text-transform:uppercase; padding:6px 14px; border-radius:30px; background:rgba(255,255,255,0.22); color:#fff; border:1px solid rgba(255,255,255,0.38); backdrop-filter:blur(6px); }
+
+h1 { font-size:74px; font-weight:900; line-height:1; color:#fff; text-shadow:0 4px 28px rgba(0,0,0,0.12); margin-bottom:12px; }
+
+.hero-sub { font-size:15px; font-weight:500; color:rgba(255,255,255,0.88); line-height:1.7; margin-bottom:28px; max-width:460px; }
+
+.team-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:11px; }
+.team-row { display:flex; gap:9px; flex-wrap:wrap; }
+.member { display:flex; align-items:center; gap:9px; background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.32); border-radius:40px; padding:7px 16px 7px 7px; backdrop-filter:blur(8px); }
+.member-av { width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.28); display:flex; align-items:center; justify-content:center; font-size:13px; }
+.member .name { font-size:12.5px; font-weight:700; color:#fff; }
+.member .sid  { font-size:10px; color:rgba(255,255,255,0.65); }
+
+/* Hero image collage */
+.hero-images { position:relative; z-index:2; width:260px; height:220px; flex-shrink:0; }
+.hi-main {
+  position:absolute; right:0; top:0;
+  width:170px; height:160px; border-radius:20px;
+  object-fit:cover;
+  border:3px solid rgba(255,255,255,0.5);
+  box-shadow:0 16px 48px rgba(0,0,0,0.25);
+}
+.hi-small {
+  position:absolute; left:0; bottom:0;
+  width:110px; height:100px; border-radius:16px;
+  object-fit:cover;
+  border:3px solid rgba(255,255,255,0.4);
+  box-shadow:0 8px 24px rgba(0,0,0,0.2);
+}
+.hi-badge {
+  position:absolute; left:72px; top:16px;
+  background:rgba(255,255,255,0.92); backdrop-filter:blur(8px);
+  border-radius:12px; padding:8px 12px;
+  font-size:10px; font-weight:800; color:#5b21b6;
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);
+  white-space:nowrap;
+}
+.hi-badge span { display:block; font-size:16px; text-align:center; margin-bottom:2px; }
+
+/* ── STATS ── */
+.stats-row { display:grid; grid-template-columns:repeat(4,1fr); background:linear-gradient(135deg,#f5f3ff,#eff6ff); border-bottom:1px solid #e5e7eb; }
+.stat-box { padding:22px 16px; text-align:center; border-right:1px solid #e5e7eb; position:relative; }
+.stat-box:last-child { border-right:none; }
+.stat-box .num { font-size:38px; font-weight:900; margin-bottom:3px; }
+.stat-box .lbl { font-size:10.5px; font-weight:600; color:#6b7280; letter-spacing:0.5px; text-transform:uppercase; }
+.stat-box::after { content:''; position:absolute; bottom:0; left:20%; right:20%; height:3px; border-radius:3px 3px 0 0; }
+.sb1 .num{color:#7c3aed;} .sb1::after{background:linear-gradient(90deg,#7c3aed,#a78bfa);}
+.sb2 .num{color:#2563eb;} .sb2::after{background:linear-gradient(90deg,#2563eb,#60a5fa);}
+.sb3 .num{color:#059669;} .sb3::after{background:linear-gradient(90deg,#059669,#34d399);}
+.sb4 .num{color:#d97706;} .sb4::after{background:linear-gradient(90deg,#d97706,#fbbf24);}
+
+/* ── BODY ── */
+.body { padding:32px 44px; background:#fff; }
+
+/* image strip */
+.img-strip { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:24px; }
+.strip-img { width:100%; height:150px; object-fit:cover; border-radius:16px; box-shadow:0 8px 24px rgba(99,102,241,0.15); border:2px solid #f3f4f6; }
+.strip-img:nth-child(1) { border-color:#e9d5ff; }
+.strip-img:nth-child(2) { border-color:#bfdbfe; }
+.strip-img:nth-child(3) { border-color:#bbf7d0; }
+
+.cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+
+.card { border-radius:18px; padding:24px; position:relative; overflow:hidden; border:1.5px solid; }
+.card-top-bar { position:absolute; top:0; left:0; right:0; height:4px; border-radius:18px 18px 0 0; }
+.card-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+.card-ico { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.card h3 { font-size:15px; font-weight:800; letter-spacing:0.2px; }
+.card p   { font-size:12px; line-height:1.8; }
+.card ul  { list-style:none; }
+.card ul li { font-size:12px; padding:4.5px 0; display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(0,0,0,0.04); }
+.card ul li:last-child { border:none; }
+.li-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+.c-purple { background:#faf5ff; border-color:#e9d5ff; }
+.c-purple .card-top-bar { background:linear-gradient(90deg,#7c3aed,#a855f7); }
+.c-purple .card-ico { background:#ede9fe; } .c-purple h3{color:#5b21b6;} .c-purple p{color:#6b7280;} .c-purple .li-dot{background:#8b5cf6;}
+
+.c-blue { background:#eff6ff; border-color:#bfdbfe; }
+.c-blue .card-top-bar { background:linear-gradient(90deg,#2563eb,#60a5fa); }
+.c-blue .card-ico { background:#dbeafe; } .c-blue h3{color:#1d4ed8;} .c-blue p{color:#6b7280;} .c-blue .li-dot{background:#3b82f6;}
+
+.c-green { background:#f0fdf4; border-color:#bbf7d0; }
+.c-green .card-top-bar { background:linear-gradient(90deg,#059669,#34d399); }
+.c-green .card-ico { background:#dcfce7; } .c-green h3{color:#065f46;} .c-green p{color:#6b7280;} .c-green .li-dot{background:#10b981;}
+
+.c-pink { background:#fff1f2; border-color:#fecdd3; }
+.c-pink .card-top-bar { background:linear-gradient(90deg,#e11d48,#f43f5e); }
+.c-pink .card-ico { background:#ffe4e6; } .c-pink h3{color:#9f1239;} .c-pink p{color:#6b7280;} .c-pink .li-dot{background:#f43f5e;}
+
+/* Tech + Roles wide */
+.card-wide { grid-column:span 2; background:linear-gradient(135deg,#faf5ff,#eff6ff); border-color:#e9d5ff; }
+.card-wide .card-top-bar { background:linear-gradient(90deg,#7c3aed,#2563eb,#06b6d4); }
+.card-wide h3 { color:#4c1d95; }
+
+/* Tech languages only */
+.lang-grid { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px; align-items:center; }
+.lang-item {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 16px; border-radius:40px; border:1.5px solid;
+  font-size:12.5px; font-weight:700;
+}
+.lang-icon { font-size:18px; }
+.l-ts    { color:#1d4ed8; border-color:#bfdbfe; background:#dbeafe; }
+.l-react { color:#0e7490; border-color:#a5f3fc; background:#cffafe; }
+.l-node  { color:#065f46; border-color:#bbf7d0; background:#dcfce7; }
+.l-pg    { color:#1e3a8a; border-color:#bfdbfe; background:#eff6ff; }
+.l-css   { color:#5b21b6; border-color:#e9d5ff; background:#ede9fe; }
+.l-expr  { color:#7c2d12; border-color:#fed7aa; background:#ffedd5; }
+
+/* Roles */
+.roles-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.role-card { border-radius:14px; padding:16px 10px; text-align:center; border:1.5px solid; }
+.role-emoji { font-size:24px; display:block; margin-bottom:7px; }
+.role-name  { font-size:12px; font-weight:800; letter-spacing:0.3px; }
+.role-desc  { font-size:10px; margin-top:3px; opacity:0.65; }
+.r-admin  { background:#faf5ff; border-color:#e9d5ff; color:#5b21b6; }
+.r-spec   { background:#fff1f2; border-color:#fecdd3; color:#9f1239; }
+.r-parent { background:#f0fdf4; border-color:#bbf7d0; color:#065f46; }
+.r-child  { background:#fffbeb; border-color:#fde68a; color:#92400e; }
+
+/* ── FOOTER ── */
+.footer { background:linear-gradient(135deg,#667eea,#764ba2); padding:20px 48px; display:flex; align-items:center; justify-content:space-between; }
+.footer-left { display:flex; align-items:center; gap:14px; }
+.uni-ico { width:48px; height:48px; border-radius:14px; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:22px; border:1px solid rgba(255,255,255,0.35); }
+.uni-name { font-size:12.5px; font-weight:800; color:#fff; margin-bottom:2px; }
+.uni-dept { font-size:10.5px; color:rgba(255,255,255,0.7); }
+.footer-right { display:flex; align-items:center; gap:10px; }
+.year-pill { background:rgba(255,255,255,0.22); color:#fff; font-size:13px; font-weight:800; padding:10px 22px; border-radius:30px; border:1.5px solid rgba(255,255,255,0.38); }
+.just-tag { font-size:9px; font-weight:700; color:rgba(255,255,255,0.65); letter-spacing:2px; text-transform:uppercase; border:1px solid rgba(255,255,255,0.28); padding:4px 10px; border-radius:20px; }
+
+@media print {
+  body { background:#fff; padding:0; }
+  .poster { border-radius:0; box-shadow:none; width:100%; }
+  @page { size:A2; margin:0; }
+}
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-dots"></div>
+    <div class="hero-blob1"></div>
+    <div class="hero-blob2"></div>
+
+    <div class="hero-left">
+      <div class="tag-row">
+        <span class="tag">🎓 Graduation Project</span>
+        <span class="tag">Computer Science · JUST</span>
+      </div>
+      <h1>Speech<br>Clinic</h1>
+      <p class="hero-sub">A specialized full-stack web platform for early speech &amp; language rehabilitation — empowering children, parents, and specialists together.</p>
+      <div class="team-label">Project Team — BY</div>
+      <div class="team-row">
+        <div class="member"><div class="member-av">👩‍💻</div><div><div class="name">Amani Alsawaei</div><div class="sid">160683</div></div></div>
+        <div class="member"><div class="member-av">👩‍💻</div><div><div class="name">Sura Alwedian</div><div class="sid">136977</div></div></div>
+        <div class="member"><div class="member-av">👩‍💻</div><div><div class="name">Tuqa Alkhatib</div><div class="sid">158062</div></div></div>
+      </div>
+    </div>
+
+    <div class="hero-images">
+      <img class="hi-main"  src="/img-specialist.png" alt="specialist"/>
+      <img class="hi-small" src="/img-child.png"      alt="child"/>
+      <div class="hi-badge"><span>🗣️</span>Speech Therapy</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box sb1"><div class="num">4</div><div class="lbl">User Roles</div></div>
+    <div class="stat-box sb2"><div class="num">15+</div><div class="lbl">API Endpoints</div></div>
+    <div class="stat-box sb3"><div class="num">10+</div><div class="lbl">Core Features</div></div>
+    <div class="stat-box sb4"><div class="num">2–5</div><div class="lbl">Target Age (Years)</div></div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- Image strip -->
+    <div class="img-strip">
+      <img class="strip-img" src="/img-child.png"      alt="Child doing exercises"/>
+      <img class="strip-img" src="/img-specialist.png" alt="Specialist session"/>
+      <img class="strip-img" src="/img-family.png"     alt="Family using app"/>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards">
+
+      <div class="card c-purple">
+        <div class="card-top-bar"></div>
+        <div class="card-header"><div class="card-ico">📋</div><h3>Project Overview</h3></div>
+        <p>A specialized web platform supporting children aged 2–5 who suffer from language delay caused by excessive screen time. The system transforms passive screen usage into active learning through guided interactive speech exercises and real-time professional supervision.</p>
+      </div>
+
+      <div class="card c-blue">
+        <div class="card-top-bar"></div>
+        <div class="card-header"><div class="card-ico">💡</div><h3>Motivation</h3></div>
+        <p>In Jordan, increased tablet usage among young children has reduced human interaction and negatively affected language development. Most Arabic apps focus on entertainment rather than therapy, while international solutions remain costly and culturally unadapted to the Arab world.</p>
+      </div>
+
+      <div class="card c-green">
+        <div class="card-top-bar"></div>
+        <div class="card-header"><div class="card-ico">⚙️</div><h3>System Features</h3></div>
+        <ul>
+          <li><span class="li-dot"></span>Secure role-based authentication system</li>
+          <li><span class="li-dot"></span>Interactive speech exercises for children</li>
+          <li><span class="li-dot"></span>Session scheduling &amp; appointment management</li>
+          <li><span class="li-dot"></span>Real-time parent–specialist messaging</li>
+          <li><span class="li-dot"></span>Progress tracking &amp; advanced analytics</li>
+          <li><span class="li-dot"></span>Achievements &amp; gamification rewards</li>
+          <li><span class="li-dot"></span>Comprehensive reports &amp; dashboards</li>
+        </ul>
+      </div>
+
+      <div class="card c-pink">
+        <div class="card-top-bar"></div>
+        <div class="card-header"><div class="card-ico">🎯</div><h3>Project Objective</h3></div>
+        <p>To provide a simple, secure, and effective platform for early speech rehabilitation with professional supervision, culturally adapted Arabic content, and full data privacy — making quality speech therapy accessible and affordable for all Jordanian families.</p>
+      </div>
+
+      <!-- Tech + Roles -->
+      <div class="card card-wide">
+        <div class="card-top-bar"></div>
+        <div class="card-header">
+          <div class="card-ico" style="background:#ede9fe;">🛠️</div>
+          <h3>Technology Stack &amp; System Architecture</h3>
+        </div>
+        <div class="lang-grid">
+          <div class="lang-item l-ts">   <span class="lang-icon">🔷</span> TypeScript</div>
+          <div class="lang-item l-react"><span class="lang-icon">⚛️</span>  React</div>
+          <div class="lang-item l-node"> <span class="lang-icon">🟢</span> Node.js</div>
+          <div class="lang-item l-expr"> <span class="lang-icon">🚀</span> Express</div>
+          <div class="lang-item l-pg">   <span class="lang-icon">🐘</span> PostgreSQL</div>
+          <div class="lang-item l-css">  <span class="lang-icon">🎨</span> TailwindCSS</div>
+        </div>
+        <div class="roles-grid">
+          <div class="role-card r-admin"><span class="role-emoji">🛡️</span><div class="role-name">Administrator</div><div class="role-desc">Full system control</div></div>
+          <div class="role-card r-spec"> <span class="role-emoji">👩‍⚕️</span><div class="role-name">Specialist</div><div class="role-desc">Manage patients &amp; sessions</div></div>
+          <div class="role-card r-parent"><span class="role-emoji">👨‍👧</span><div class="role-name">Parent</div><div class="role-desc">Track child progress</div></div>
+          <div class="role-card r-child"><span class="role-emoji">🧒</span><div class="role-name">Child</div><div class="role-desc">Fun exercises &amp; rewards</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      <div class="uni-ico">🎓</div>
+      <div>
+        <div class="uni-name">Jordan University of Science and Technology</div>
+        <div class="uni-dept">Faculty of Computer &amp; Information Technology &nbsp;·&nbsp; Department of Computer Science</div>
+      </div>
+    </div>
+    <div class="footer-right">
+      <span class="just-tag">JUST · CIT</span>
+      <div class="year-pill">2025 – 2026</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Download Button -->
+<div id="dl-btn-wrap" style="position:fixed;bottom:32px;right:32px;z-index:9999;">
+  <button id="dl-btn" onclick="downloadPDF()" style="
+    display:flex;align-items:center;gap:10px;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:800;
+    padding:14px 28px;border-radius:50px;border:none;cursor:pointer;
+    box-shadow:0 8px 32px rgba(102,126,234,0.5);
+    letter-spacing:0.3px;transition:transform 0.2s;
+  ">
+    <span style="font-size:20px;">⬇️</span> تحميل PDF
+  </button>
+</div>
+
+<script>
+async function downloadPDF() {
+  const btn = document.getElementById('dl-btn-wrap');
+  btn.style.display = 'none';
+  const { jsPDF } = window.jspdf;
+  const poster = document.querySelector('.poster');
+  const canvas = await html2canvas(poster, {
+    scale: 2,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: '#ffffff',
+    logging: false
+  });
+  const imgData = canvas.toDataURL('image/png');
+  const pdf = new jsPDF({
+    orientation: 'portrait',
+    unit: 'px',
+    format: [canvas.width / 2, canvas.height / 2]
+  });
+  pdf.addImage(imgData, 'PNG', 0, 0, canvas.width / 2, canvas.height / 2);
+  pdf.save('Speech-Clinic-Poster.pdf');
+  btn.style.display = 'block';
+}
+</script>
+
+</body>
+</html>

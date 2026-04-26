@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>دليل مشروع عيادة النطق – شرح شامل</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Cairo',sans-serif; background:#f0f4f8; color:#1a202c; }
+#dl-btn-wrap { position:fixed; bottom:28px; left:28px; z-index:9999; }
+.dl-btn { display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;padding:13px 24px;border-radius:50px;border:none;cursor:pointer;box-shadow:0 6px 24px rgba(102,126,234,.45); }
+.doc { max-width:960px;margin:32px auto;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.10); }
+
+/* COVER */
+.cover { background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);padding:64px 56px;color:#fff;text-align:center;position:relative; }
+.cover-logo { font-size:56px;margin-bottom:12px; }
+.cover-title { font-size:46px;font-weight:900;margin-bottom:6px; }
+.cover-sub { font-size:18px;opacity:.88;margin-bottom:32px; }
+.cover-tag { display:inline-block;background:rgba(255,255,255,.2);border-radius:20px;padding:5px 16px;font-size:12px;margin:3px; }
+.cover-team { margin-top:32px;display:flex;justify-content:center;gap:20px;flex-wrap:wrap; }
+.cover-member { background:rgba(255,255,255,.15);border-radius:12px;padding:12px 22px; }
+.cover-member-name { font-weight:700;font-size:15px; }
+.cover-member-id { font-size:12px;opacity:.75; }
+.cover-uni { margin-top:28px;font-size:13px;opacity:.7; }
+
+/* TOC */
+.toc { padding:44px 56px;border-bottom:2px solid #f0f4f8; }
+.sec-title-main { font-size:23px;font-weight:800;margin-bottom:24px;display:flex;align-items:center;gap:10px; }
+.toc-grid { display:grid;grid-template-columns:1fr 1fr;gap:7px 28px; }
+.toc-item { display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;text-decoration:none;color:#2d3748;transition:background .2s; }
+.toc-item:hover { background:#f7f7ff; }
+.toc-num { background:#667eea;color:#fff;font-size:11px;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.toc-text { font-size:13.5px;font-weight:600; }
+
+/* SECTION */
+.section { padding:48px 56px;border-bottom:2px solid #f0f4f8; }
+.section:last-child { border-bottom:none; }
+.sec-header { display:flex;align-items:center;gap:14px;margin-bottom:28px; }
+.sec-icon { font-size:34px; }
+.sec-title { font-size:24px;font-weight:800; }
+.c-blue{color:#4c51bf}.c-green{color:#276749}.c-purple{color:#553c9a}.c-red{color:#9b2c2c}.c-orange{color:#7b341e}.c-teal{color:#234e52}.c-pink{color:#97266d}.c-dark{color:#1a202c}
+
+.lead { font-size:14.5px;line-height:1.95;color:#4a5568;margin-bottom:18px; }
+.lead strong { color:#2d3748; }
+.tip { background:#fffbeb;border-right:4px solid #f6ad55;border-radius:10px;padding:14px 18px;font-size:13.5px;color:#744210;margin:14px 0;line-height:1.8; }
+.tip::before { content:"💡 "; font-size:15px; }
+.note { background:#ebf4ff;border-right:4px solid #667eea;border-radius:10px;padding:14px 18px;font-size:13.5px;color:#2c5282;margin:14px 0;line-height:1.8; }
+.note::before { content:"📌 "; }
+.warn { background:#fff5f5;border-right:4px solid #fc8181;border-radius:10px;padding:14px 18px;font-size:13.5px;color:#742a2a;margin:14px 0;line-height:1.8; }
+.warn::before { content:"⚠️ "; }
+
+/* TECH */
+.tech-grid { display:grid;grid-template-columns:1fr 1fr;gap:14px; }
+.tech-card { border:2px solid #e9ecef;border-radius:14px;padding:18px; }
+.tech-card:hover { border-color:#667eea;box-shadow:0 4px 16px rgba(102,126,234,.14); }
+.tech-head { display:flex;align-items:center;gap:10px;margin-bottom:8px; }
+.tech-emoji { font-size:26px; }
+.tech-name { font-size:16px;font-weight:800;color:#2d3748; }
+.tech-sub { font-size:11px;color:#888;font-weight:600; }
+.tech-desc { font-size:13px;line-height:1.85;color:#5a6575;margin-bottom:10px; }
+.tech-why { background:#f7f7ff;border-radius:8px;padding:8px 12px;font-size:12px;color:#553c9a;font-weight:600; }
+.tech-why::before { content:"✅ لماذا اخترناها؟ "; }
+.tech-not { background:#fff5f5;border-radius:8px;padding:8px 12px;font-size:12px;color:#742a2a;font-weight:600;margin-top:6px; }
+.tech-not::before { content:"❌ لماذا لم نختر البديل؟ "; }
+
+/* TREE */
+.tree { background:#1a202c;border-radius:14px;padding:22px;font-family:monospace;font-size:12.5px;line-height:2;color:#e2e8f0;overflow-x:auto; }
+.f { color:#fbd38d;font-weight:700; }
+.fi { color:#90cdf4; }
+.cm { color:#68d391; }
+.hl { color:#f6ad55;font-weight:700; }
+
+/* PAGES */
+.pages-grid { display:grid;grid-template-columns:1fr;gap:12px; }
+.page-card { border-radius:14px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start; }
+.pc-admin  { background:#ebf4ff;border-right:5px solid #4c51bf; }
+.pc-spec   { background:#f0fff4;border-right:5px solid #276749; }
+.pc-parent { background:#fffbeb;border-right:5px solid #d97706; }
+.pc-child  { background:#fef3f2;border-right:5px solid #e53e3e; }
+.pc-shared { background:#f5f3ff;border-right:5px solid #7c3aed; }
+.page-ico  { font-size:26px;margin-top:2px;flex-shrink:0; }
+.page-name { font-size:14.5px;font-weight:800;color:#1a202c;margin-bottom:3px; }
+.page-path { font-size:11px;color:#888;font-family:monospace;background:#fff;display:inline-block;padding:2px 8px;border-radius:20px;margin-bottom:5px; }
+.page-desc { font-size:13px;line-height:1.8;color:#4a5568; }
+
+/* ROLES */
+.role-row { display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px; }
+.role-card { border-radius:14px;padding:16px 18px; }
+.r-admin  { background:#ebf4ff;border:2px solid #4c51bf; }
+.r-spec   { background:#f0fff4;border:2px solid #276749; }
+.r-parent { background:#fffbeb;border:2px solid #d97706; }
+.r-child  { background:#fef3f2;border:2px solid #e53e3e; }
+.role-title { font-size:15px;font-weight:800;margin-bottom:7px; }
+.r-admin .role-title{color:#4c51bf}.r-spec .role-title{color:#276749}.r-parent .role-title{color:#d97706}.r-child .role-title{color:#e53e3e}
+.role-list { list-style:none; }
+.role-list li { font-size:13px;color:#4a5568;padding:2px 0; }
+.role-list li::before { content:"• ";font-weight:700; }
+
+/* API TABLE */
+.api-table { width:100%;border-collapse:collapse;font-size:13px; }
+.api-table th { background:#4c51bf;color:#fff;padding:10px 14px;text-align:right;font-weight:700; }
+.api-table td { padding:9px 14px;border-bottom:1px solid #e9ecef;vertical-align:top; }
+.api-table tr:nth-child(even) td { background:#f7f7ff; }
+.method { display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;font-family:monospace; }
+.mg{background:#c6f6d5;color:#276749}.mp{background:#bee3f8;color:#1a365d}.mpu{background:#fefcbf;color:#744210}.md{background:#fed7d7;color:#742a2a}
+
+/* DB */
+.db-grid { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+.db-card { border:2px solid #e9ecef;border-radius:12px;padding:14px; }
+.db-title { font-size:12px;font-weight:800;color:#4c51bf;margin-bottom:8px;font-family:monospace;padding:3px 9px;background:#ebf4ff;border-radius:6px;display:inline-block; }
+.db-field { font-size:12px;color:#4a5568;padding:2px 0;display:flex;gap:8px; }
+.dfn { color:#553c9a;font-weight:700;font-family:monospace; }
+.dft { color:#888; }
+
+/* STEPS */
+.steps { display:flex;flex-direction:column;gap:14px; }
+.step { display:flex;gap:14px;align-items:flex-start; }
+.step-num { background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-weight:800;font-size:15px;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:4px; }
+.step-title { font-size:14.5px;font-weight:700;color:#2d3748;margin-bottom:5px; }
+.step-desc  { font-size:13px;line-height:1.85;color:#5a6575; }
+.code-block { background:#1a202c;color:#90cdf4;border-radius:10px;padding:14px 18px;font-family:monospace;font-size:12.5px;line-height:1.9;margin:8px 0;white-space:pre;overflow-x:auto;direction:ltr;text-align:left; }
+.cg{color:#68d391}.cy{color:#fbd38d}.cw{color:#f7fafc}.cp{color:#f6ad55}
+
+/* EDIT CARDS */
+.edit-card { border-radius:12px;padding:16px 18px;border-right:5px solid;margin-bottom:12px; }
+.ec1{background:#f5f3ff;border-color:#7c3aed}.ec2{background:#ecfdf5;border-color:#059669}.ec3{background:#eff6ff;border-color:#2563eb}.ec4{background:#fef3c7;border-color:#d97706}.ec5{background:#fce7f3;border-color:#db2777}.ec6{background:#f0fdf4;border-color:#16a34a}
+.edit-title { font-size:14.5px;font-weight:800;color:#1a202c;margin-bottom:6px; }
+.edit-path { font-family:monospace;font-size:11.5px;background:#fff;padding:2px 8px;border-radius:6px;color:#553c9a;display:inline-block;margin-bottom:5px; }
+.edit-desc  { font-size:13px;line-height:1.85;color:#4a5568; }
+
+/* ACCOUNTS */
+.acc-table { width:100%;border-collapse:collapse;font-size:14px; }
+.acc-table th { background:#553c9a;color:#fff;padding:11px 14px;text-align:right;font-weight:700; }
+.acc-table td { padding:11px 14px;border-bottom:1px solid #e9ecef; }
+.acc-table tr:nth-child(even) td { background:#f7f7ff; }
+.badge { display:inline-block;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:700; }
+
+/* GITHUB */
+.gh-flow { display:flex;flex-direction:column;gap:12px; }
+.gh-step { display:flex;gap:14px;background:#f7f7ff;border-radius:12px;padding:14px 18px; }
+.gh-icon { font-size:24px;flex-shrink:0; }
+.gh-title { font-size:14px;font-weight:700;color:#2d3748;margin-bottom:4px; }
+.gh-desc  { font-size:13px;color:#5a6575;line-height:1.8; }
+
+/* PGADMIN */
+.pg-steps { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+.pg-step { background:#f0fff4;border:2px solid #276749;border-radius:12px;padding:14px;text-align:center; }
+.pg-num { background:#276749;color:#fff;width:28px;height:28px;border-radius:50%;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px; }
+.pg-title { font-size:13px;font-weight:700;color:#1a202c;margin-bottom:4px; }
+.pg-desc  { font-size:12px;color:#4a5568;line-height:1.7; }
+
+/* FOOTER */
+.doc-footer { background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:28px 56px;text-align:center; }
+.doc-footer-title { font-size:17px;font-weight:700;margin-bottom:5px; }
+.doc-footer-sub   { font-size:12.5px;opacity:.8; }
+
+/* TREE TABLE */
+.tree-table { width:100%; border-collapse:collapse; font-size:13px; direction:ltr; }
+.tree-table th { background:#2d3748; color:#fbd38d; padding:9px 14px; text-align:left; font-weight:700; font-family:monospace; }
+.tree-table td { padding:8px 14px; border-bottom:1px solid #2d3748; vertical-align:top; }
+.tree-table tr:nth-child(even) td { background:#1e2535; }
+.tree-table tr:nth-child(odd) td { background:#1a202c; }
+.tree-table .td-path { font-family:monospace; color:#90cdf4; white-space:nowrap; }
+.tree-table .td-type { color:#f6ad55; font-size:11px; text-align:center; white-space:nowrap; }
+.tree-table .td-desc { color:#68d391; font-size:12px; direction:rtl; }
+.tree-table .row-folder .td-path { color:#fbd38d; font-weight:700; }
+.tree-table .row-sep td { background:#553c9a!important; padding:4px 14px; }
+.tree-table .row-sep .td-path { color:#fff; font-weight:800; font-size:13px; letter-spacing:.5px; }
+.indent1 { padding-right:16px; }
+.indent2 { padding-right:32px; }
+.indent3 { padding-right:48px; }
+.indent4 { padding-right:64px; }
+.indent5 { padding-right:80px; }
+
+/* ENV TABLE */
+.env-table { width:100%; border-collapse:collapse; font-size:13px; }
+.env-table th { background:#2d3748; color:#fbd38d; padding:10px 14px; text-align:right; font-weight:700; }
+.env-table td { padding:10px 14px; border-bottom:1px solid #e2e8f0; vertical-align:top; line-height:1.8; }
+.env-table tr:nth-child(even) td { background:#f7f7ff; }
+.env-table .var-name { font-family:monospace; font-size:13px; font-weight:800; color:#553c9a; white-space:nowrap; }
+.env-table .var-val { font-family:monospace; font-size:12px; color:#276749; background:#f0fff4; padding:2px 8px; border-radius:6px; display:block; margin-top:4px; word-break:break-all; }
+.env-table .var-desc { font-size:13px; color:#4a5568; }
+
+/* LIB FILES */
+.lib-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.lib-card { border-radius:12px; padding:14px 16px; border-right:4px solid; }
+.lib-f1{background:#f5f3ff;border-color:#7c3aed}.lib-f2{background:#ecfdf5;border-color:#059669}.lib-f3{background:#eff6ff;border-color:#2563eb}.lib-f4{background:#fef3c7;border-color:#d97706}.lib-f5{background:#fce7f3;border-color:#db2777}.lib-f6{background:#f0fdf4;border-color:#16a34a}.lib-f7{background:#fff5f5;border-color:#e53e3e}.lib-f8{background:#fffbeb;border-color:#b45309}.lib-f9{background:#e0f2fe;border-color:#0369a1}.lib-f10{background:#fdf4ff;border-color:#a21caf}
+.lib-fname { font-family:monospace; font-size:13px; font-weight:800; color:#1a202c; margin-bottom:4px; }
+.lib-fpath { font-size:11px; color:#888; margin-bottom:5px; }
+.lib-fdesc { font-size:12.5px; color:#4a5568; line-height:1.75; }
+
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  #dl-btn-wrap { display:none!important; }
+  #dl-progress { display:none!important; }
+  body { background:#fff; }
+  .doc { box-shadow:none; margin:0; border-radius:0; }
+  .section { page-break-inside:avoid; }
+  a { color:inherit; text-decoration:none; }
+}
+</style>
+</head>
+<body>
+
+<div id="dl-btn-wrap">
+  <button class="dl-btn" onclick="window.print()">🖨️ طباعة / حفظ PDF بالألوان</button>
+</div>
+
+<div class="doc">
+
+<!-- ══════════════ COVER ══════════════ -->
+<div class="cover">
+  <div class="cover-logo">🏥</div>
+  <div class="cover-title">عيادة النطق</div>
+  <div class="cover-sub">Speech Clinic — دليل شرح المشروع الكامل للمبتدئين</div>
+  <div>
+    <span class="cover-tag">📚 شرح شامل من الصفر</span>
+    <span class="cover-tag">🎓 مشروع تخرج</span>
+    <span class="cover-tag">JUST · كلية تقنية المعلومات والحاسوب</span>
+  </div>
+  <div class="cover-team">
+    <div class="cover-member"><div class="cover-member-name">أماني السواعي</div><div class="cover-member-id">160683</div></div>
+    <div class="cover-member"><div class="cover-member-name">سرى الوديان</div><div class="cover-member-id">136977</div></div>
+    <div class="cover-member"><div class="cover-member-name">توقة الخطيب</div><div class="cover-member-id">158062</div></div>
+  </div>
+  <div class="cover-uni">قسم علم الحاسوب · 2025 – 2026</div>
+</div>
+
+<!-- ══════════════ TOC ══════════════ -->
+<div class="toc">
+  <div class="sec-title-main c-blue">📋 فهرس المحتويات</div>
+  <div class="toc-grid">
+    <a class="toc-item" href="#s1"><div class="toc-num">1</div><div class="toc-text">فكرة المشروع ومشكلته</div></a>
+    <a class="toc-item" href="#s2"><div class="toc-num">2</div><div class="toc-text">التقنيات المستخدمة — شرح تفصيلي</div></a>
+    <a class="toc-item" href="#s3"><div class="toc-num">3</div><div class="toc-text">هيكل المجلدات والملفات</div></a>
+    <a class="toc-item" href="#s4"><div class="toc-num">4</div><div class="toc-text">أدوار المستخدمين وصلاحياتهم</div></a>
+    <a class="toc-item" href="#s5"><div class="toc-num">5</div><div class="toc-text">الصفحات — كل صفحة ومكانها ووظيفتها</div></a>
+    <a class="toc-item" href="#s6"><div class="toc-num">6</div><div class="toc-text">السيرفر (Backend) وكيف يعمل</div></a>
+    <a class="toc-item" href="#s7"><div class="toc-num">7</div><div class="toc-text">قاعدة البيانات وجداولها</div></a>
+    <a class="toc-item" href="#s8"><div class="toc-num">8</div><div class="toc-text">pgAdmin 4 — ما هي وكيف نربطها</div></a>
+    <a class="toc-item" href="#s9"><div class="toc-num">9</div><div class="toc-text">تشغيل المشروع على لابتوب جديد (خطوة بخطوة)</div></a>
+    <a class="toc-item" href="#s10"><div class="toc-num">10</div><div class="toc-text">كيف تعدّل أو تضيف على الكود</div></a>
+    <a class="toc-item" href="#s11"><div class="toc-num">11</div><div class="toc-text">GitHub — رفع التعديلات والعمل الجماعي</div></a>
+    <a class="toc-item" href="#s12"><div class="toc-num">12</div><div class="toc-text">حسابات المستخدمين للتجربة</div></a>
+    <a class="toc-item" href="#s13"><div class="toc-num">13</div><div class="toc-text">ملف الـ .env — متغيرات البيئة كاملة</div></a>
+  </div>
+</div>
+
+<!-- ══════════════ 1. IDEA ══════════════ -->
+<div class="section" id="s1">
+  <div class="sec-header"><div class="sec-icon">💡</div><div class="sec-title c-blue">١. فكرة المشروع ومشكلته</div></div>
+  <p class="lead"><strong>المشكلة:</strong> كثير من عيادات علاج النطق تعتمد على الورق والواتساب لتنسيق المواعيد والجلسات والتمارين — مما يسبب فوضى وضياع معلومات وصعوبة متابعة تقدم الطفل.</p>
+  <p class="lead"><strong>الحل:</strong> منصة ويب متكاملة تجمع كل أطراف العملية في مكان واحد. الطفل يرى تمارينه ونجومه. ولي الأمر يتابع مواعيد ابنه ومذكرات الجلسات. الأخصائي يدير أطفاله وجلساته. المدير يشرف على كل شيء.</p>
+  <div class="tip">هذا المشروع هو <strong>Full-Stack Web Application</strong> — يعني تطبيق ويب متكامل يشمل الواجهة (ما يراه المستخدم) والسيرفر (المحرك الخفي) وقاعدة البيانات (مكان تخزين كل المعلومات) معاً.</div>
+</div>
+
+<!-- ══════════════ 2. TECH ══════════════ -->
+<div class="section" id="s2">
+  <div class="sec-header"><div class="sec-icon">🛠️</div><div class="sec-title c-green">٢. التقنيات المستخدمة — شرح تفصيلي</div></div>
+  <p class="lead">المشروع يستخدم منظومة من التقنيات الحديثة. هذا شرح لكل واحدة وسبب اختيارها بالتحديد:</p>
+
+  <div class="tech-grid">
+
+    <div class="tech-card">
+      <div class="tech-head"><div class="tech-emoji">🔷</div><div><div class="tech-name">TypeScript</div><div class="tech-sub">لغة البرمجة الأساسية</div></div></div>
+      <div class="tech-desc">TypeScript هي JavaScript لكن "بنظارات". تضيف ما يسمى <em>Type Safety</em> — أي أن كل متغير تكتبيه البرنامج يعرف نوعه (نص، رقم، كائن...). إذا كتبتِ كود خاطئ، يخبرك <em>قبل</em> التشغيل. مثال: لو أرسل API رقم الموعد كنص "123" بدل رقم 123، TypeScript يحذرك فوراً.</div>
+      <div class="tech-why">أقل أخطاء، كود أوضح، VS Code يساعدك بـ autocomplete ذكي</div>
+      <div class="tech-not">JavaScript العادي لا يكتشف الأخطاء إلا وقت التشغيل — وهذا خطر في برنامج طبي</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-head"><div class="tech-emoji">⚛️</div><div><div class="tech-name">React</div><div class="tech-sub">مكتبة بناء الواجهة</div></div></div>
+      <div class="tech-desc">React هي مكتبة JavaScript تبني الواجهة من <em>مكونات (Components)</em>. تخيّلي كل صفحة مكونة من قطع LEGO — كل قطعة مكوّن منفصل (زر، قائمة، جدول). المكوّن يُكتب مرة واحدة ويُستخدم في أي مكان. React تتولى تحديث الصفحة تلقائياً عند تغير البيانات دون إعادة تحميلها.</div>
+      <div class="tech-why">الأكثر انتشاراً عالمياً (تستخدمه Meta, Netflix, Airbnb)، مجتمع ضخم، آلاف الدروس المجانية</div>
+      <div class="tech-not">Vue.js قريب منه لكن React له مجتمع أكبر وفرص عمل أكثر</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-head"><div class="tech-emoji">⚡</div><div><div class="tech-name">Vite</div><div class="tech-sub">أداة تطوير وبناء الواجهة</div></div></div>
+      <div class="tech-desc">Vite (تُنطق "فيت") هي الأداة التي تشغّل بيئة التطوير. عندما تعدلين ملفاً، تحدّث المتصفح <em>خلال أجزاء من الثانية</em> دون إعادة تحميل الصفحة — تسمى هذه التقنية <em>Hot Module Replacement</em>. أيضاً، تحوّل كود TypeScript وReact لملفات HTML+CSS+JS عادية عند البناء النهائي.</div>
+      <div class="tech-why">أسرع من Create-React-App بـ 20 مرة، إعداده بسيط جداً</div>
+      <div class="tech-not">Webpack أبطأ بكثير خاصة في المشاريع الكبيرة</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-head"><div class="tech-emoji">🟢</div><div><div class="tech-name">Node.js</div><div class="tech-sub">بيئة تشغيل السيرفر</div></div></div>
+      <div class="tech-desc">Node.js تسمح بتشغيل JavaScript خارج المتصفح — أي على السيرفر. قبلها، السيرفر كان يستخدم PHP أو Python أو Java. الآن نكتب <em>TypeScript واحدة</em> للواجهة والسيرفر معاً، مما يوفر وقتاً كبيراً. Node.js سريع جداً في معالجة طلبات كثيرة في نفس الوقت.</div>
+      <div class="tech-why">لغة واحدة للكل، أداء ممتاز، سهل التعلم لمن يعرف JavaScript</div>
+      <div class="tech-not">Python+Django قوي لكن يتطلب تعلم لغتين</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-head"><div class="tech-emoji">🚂</div><div><div class="tech-name">Express.js</div><div class="tech-sub">إطار بناء الـ API</div></div></div>
+      <div class="tech-desc">Express هو الإطار الذي يبني الـ API فوق Node.js. الـ API هي "نقاط النهاية" التي تستدعيها الواجهة. مثال: الواجهة تقول "أعطني قائمة المواعيد" فتبعث طلباً لـ /api/appointments، Express يستقبله، يسأل قاعدة البيانات، ويرسل الجواب بصيغة JSON.</div>
+      <div class="tech-why">خفيف جداً (14KB فقط)، مرن، أكثر من 50 مليون تحميل أسبوعياً على npm</div>
+      <div class="tech-not">NestJS أقوى لكن معقد جداً للمبتدئين</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-head"><div class="tech-emoji">🐘</div><div><div class="tech-name">PostgreSQL</div><div class="tech-sub">قاعدة البيانات</div></div></div>
+      <div class="tech-desc">PostgreSQL (تُنطق "پوستجري-إس-كيو-إل") هي نظام قواعد بيانات علائقية (Relational Database). تخزّن البيانات في جداول مترابطة مثل Excel لكن أقوى بآلاف المرات. تدعم المعاملات (Transactions) — أي لو حدث خطأ أثناء حفظ موعد، يُلغى كل شيء تلقائياً ولا تُحفظ بيانات ناقصة.</div>
+      <div class="tech-why">مجاني ومفتوح المصدر، يُستخدم في مستشفيات وبنوك حقيقية، أقوى من MySQL</div>
+      <div class="tech-not">MongoDB (NoSQL) جيد للبيانات غير المنظمة، لكن بياناتنا علائقية (المواعيد مرتبطة بالأطفال والأخصائيين)</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-head"><div class="tech-emoji">🎨</div><div><div class="tech-name">TailwindCSS</div><div class="tech-sub">مكتبة التصميم</div></div></div>
+      <div class="tech-desc">Tailwind هي مكتبة CSS تعتمد على <em>Utility Classes</em>. بدل أن تكتبي ملف CSS منفصل، تضيفين classes مباشرة في الكود. مثال: <code>className="bg-blue-500 text-white rounded-lg p-4"</code> يعطي خلفية زرقاء، نص أبيض، زوايا مدورة، وحشو. التصميم بالكامل يكون في نفس ملف الكود.</div>
+      <div class="tech-why">أسرع بكثير من كتابة CSS يدوي، التصميم متسق تلقائياً، يدعمه VS Code بـ autocomplete</div>
+      <div class="tech-not">Bootstrap جاهز أكثر لكن تصميماته تبدو متشابهة في كل موقع</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-head"><div class="tech-emoji">🦋</div><div><div class="tech-name">Drizzle ORM</div><div class="tech-sub">طبقة التخاطب مع قاعدة البيانات</div></div></div>
+      <div class="tech-desc">ORM (Object Relational Mapper) هي أداة تتيح التعامل مع قاعدة البيانات بلغة TypeScript بدل SQL. بدل أن تكتبي: <code>SELECT * FROM appointments WHERE child_id = 5</code> تكتبي: <code>db.select().from(appointments).where(eq(appointments.childId, 5))</code> وهذا TypeScript فيه type checking كامل.</div>
+      <div class="tech-why">آمن من SQL Injection، أسرع من Prisma، وكوده أقرب للـ SQL الأصلي</div>
+      <div class="tech-not">Prisma مشهور أكثر لكن أبطأ في الأداء خاصة مع PostgreSQL</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-head"><div class="tech-emoji">📡</div><div><div class="tech-name">TanStack Query</div><div class="tech-sub">إدارة طلبات الـ API في React</div></div></div>
+      <div class="tech-desc">بدون TanStack Query، كل مرة تفتحين صفحة المواعيد يُعاد جلب البيانات من السيرفر. مع TanStack Query، البيانات تُحفظ في ذاكرة المتصفح (Cache). لو فتحتِ الصفحة مجدداً خلال دقيقة، يُعرض الـ Cache فوراً ثم يُحدّث في الخلفية. أيضاً يتعامل مع Loading و Error states تلقائياً.</div>
+      <div class="tech-why">يوفر ساعات من كود useEffect/useState المكرر، ويجعل تجربة المستخدم أسرع</div>
+      <div class="tech-not">Redux أعقد وأثقل لهذا النوع من المهام</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-head"><div class="tech-emoji">🧭</div><div><div class="tech-name">Wouter</div><div class="tech-sub">مكتبة التنقل بين الصفحات</div></div></div>
+      <div class="tech-desc">الموقع يبدو وكأنه يغير صفحات لكن في الحقيقة صفحة HTML واحدة فقط تتغير محتوياتها — وهذا ما يُسمى <em>Single Page Application (SPA)</em>. Wouter هي التي تتحكم بهذا: تقرأ الـ URL وتُظهر المكوّن المناسب. مثلاً /admin → تُظهر مكوّن AdminDashboard.</div>
+      <div class="tech-why">خفيفة جداً (2KB)، كافية تماماً لمشروعنا</div>
+      <div class="tech-not">React Router أثقل (10KB+) ونحن لا نحتاج كل ميزاته</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-head"><div class="tech-emoji">📦</div><div><div class="tech-name">pnpm + Monorepo</div><div class="tech-sub">مدير الحزم والبنية</div></div></div>
+      <div class="tech-desc">pnpm هو مدير الحزم (مثل npm) لكن أسرع وأقل استهلاكاً للمساحة. الـ Monorepo تعني أن الواجهة والسيرفر وقاعدة البيانات كلها في مجلد واحد وتشترك في نفس الـ node_modules. هذا يمنع تكرار الكود — مثلاً تعريف نوع "Appointment" يُكتب مرة واحدة ويُستخدم في الواجهة والسيرفر معاً.</div>
+      <div class="tech-why">لا تكرار، تحديثات مركزية، يُسهّل مشاركة الكود بين الواجهة والسيرفر</div>
+      <div class="tech-not">مشروعان منفصلان (frontend + backend) يتطلبان مزامنة يدوية مرهقة</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ 3. STRUCTURE ══════════════ -->
+<div class="section" id="s3">
+  <div class="sec-header"><div class="sec-icon">📁</div><div class="sec-title c-purple">٣. هيكل المجلدات والملفات</div></div>
+  <p class="lead">المشروع <strong>Monorepo</strong> — مجلد واحد يحتوي ثلاثة مشاريع فرعية تعمل معاً. كل ملف له مكانه المحدد:</p>
+  <table class="tree-table">
+    <thead>
+      <tr>
+        <th style="width:46%">📂 المسار / الملف</th>
+        <th style="width:12%;text-align:center">النوع</th>
+        <th style="width:42%;text-align:right;direction:rtl">الوظيفة</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- ROOT -->
+      <tr class="row-sep"><td colspan="3" class="td-path">🏠  speech-clinic/  ← المجلد الجذر للمشروع</td></tr>
+
+      <!-- FRONTEND -->
+      <tr class="row-sep"><td colspan="3" class="td-path">🖥️  artifacts/speech-clinic/  ← الواجهة (Frontend) — React + Vite</td></tr>
+      <tr class="row-folder"><td class="td-path">  src/pages/admin/</td><td class="td-type">📁 مجلد</td><td class="td-desc">صفحات المدير (Admin)</td></tr>
+      <tr><td class="td-path indent1">index.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">لوحة تحكم المدير — إحصائيات عامة</td></tr>
+      <tr><td class="td-path indent1">specialists.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">إدارة الأخصائيين — إضافة / تعديل / حذف</td></tr>
+      <tr><td class="td-path indent1">children.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">إدارة الأطفال المسجّلين</td></tr>
+      <tr><td class="td-path indent1">appointments.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">إدارة جميع المواعيد</td></tr>
+      <tr><td class="td-path indent1">users.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">إدارة كل المستخدمين (أدوار، كلمات مرور)</td></tr>
+
+      <tr class="row-folder"><td class="td-path">  src/pages/specialist/</td><td class="td-type">📁 مجلد</td><td class="td-desc">صفحات الأخصائي</td></tr>
+      <tr><td class="td-path indent1">index.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">لوحة الأخصائي — جلساته ومواعيده</td></tr>
+      <tr><td class="td-path indent1">children.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">قائمة الأطفال المسنَدين للأخصائي</td></tr>
+      <tr><td class="td-path indent1">sessions.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">تسجيل الجلسات وتقاريرها</td></tr>
+      <tr><td class="td-path indent1">appointments.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">مواعيد الأخصائي</td></tr>
+      <tr><td class="td-path indent1">exercises.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">إنشاء التمارين العلاجية وتعديلها</td></tr>
+
+      <tr class="row-folder"><td class="td-path">  src/pages/parent/</td><td class="td-type">📁 مجلد</td><td class="td-desc">صفحات ولي الأمر</td></tr>
+      <tr><td class="td-path indent1">index.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">لوحة ولي الأمر — نظرة عامة عن أبنائه</td></tr>
+      <tr><td class="td-path indent1">children.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">متابعة تقدّم الأبناء</td></tr>
+      <tr><td class="td-path indent1">appointments.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">عرض مواعيد الأبناء</td></tr>
+      <tr><td class="td-path indent1">sessions.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">تفاصيل جلسات الأبناء</td></tr>
+
+      <tr class="row-folder"><td class="td-path">  src/pages/child/</td><td class="td-type">📁 مجلد</td><td class="td-desc">صفحات الطفل</td></tr>
+      <tr><td class="td-path indent1">index.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">لوحة الطفل — الإنجازات والتمارين</td></tr>
+      <tr><td class="td-path indent1">exercises.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">التمارين العلاجية المخصصة للطفل</td></tr>
+
+      <tr class="row-folder"><td class="td-path">  src/pages/shared/</td><td class="td-type">📁 مجلد</td><td class="td-desc">صفحات مشتركة بين أكثر من دور</td></tr>
+      <tr><td class="td-path indent1">settings.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">إعدادات الحساب (اللغة، المظهر، كلمة المرور)</td></tr>
+      <tr><td class="td-path indent1">notifications.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">إشعارات المستخدم</td></tr>
+      <tr><td class="td-path indent1">messages.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">الرسائل الداخلية بين المستخدمين</td></tr>
+      <tr><td class="td-path indent1">achievements.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">شارات الإنجاز والمكافآت</td></tr>
+      <tr><td class="td-path indent1">reports.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">التقارير الطبية والتقدّم</td></tr>
+
+      <tr class="row-folder"><td class="td-path">  src/components/layout/</td><td class="td-type">📁 مجلد</td><td class="td-desc">الهيكل العام للصفحات</td></tr>
+      <tr><td class="td-path indent1">Header.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">الشريط العلوي — اسم المستخدم وزر الخروج</td></tr>
+      <tr><td class="td-path indent1">Sidebar.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">القائمة الجانبية — تتغير حسب الدور</td></tr>
+
+      <tr class="row-folder"><td class="td-path">  src/components/ui/</td><td class="td-type">📁 مجلد</td><td class="td-desc">مكونات الواجهة القابلة للإعادة</td></tr>
+      <tr><td class="td-path indent1">Button, Table, Dialog...</td><td class="td-type">📄 ملفات</td><td class="td-desc">أزرار، جداول، نوافذ، بطاقات — shadcn/ui</td></tr>
+
+      <tr class="row-folder"><td class="td-path">  src/hooks/</td><td class="td-type">📁 مجلد</td><td class="td-desc">منطق مشترك بين الصفحات</td></tr>
+      <tr><td class="td-path indent1">use-auth.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">حالة المستخدم (من هو؟ هل دخل؟ تسجيل خروج)</td></tr>
+      <tr><td class="td-path indent1">use-toast.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">رسائل الإشعار السريعة (Toast notifications)</td></tr>
+
+      <tr class="row-folder"><td class="td-path">  src/lib/</td><td class="td-type">📁 مجلد</td><td class="td-desc">أدوات وخدمات مشتركة</td></tr>
+      <tr><td class="td-path indent1">api.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">دوال الاتصال بالـ API مع معالجة الأخطاء</td></tr>
+      <tr><td class="td-path indent1">i18n.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">جميع نصوص الموقع عربي/إنجليزي</td></tr>
+      <tr><td class="td-path indent1">theme.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">منطق الوضع الفاتح والغامق</td></tr>
+      <tr><td class="td-path indent1">sounds.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">أصوات الاحتفال عند إنجاز الطفل تمريناً</td></tr>
+      <tr><td class="td-path indent1">format.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">تنسيق التواريخ والأرقام بالعربي/الإنجليزي</td></tr>
+      <tr><td class="td-path indent1">utils.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">دوال مساعدة عامة (دمج classNames...)</td></tr>
+
+      <tr class="row-folder"><td class="td-path">  ⭐ src/App.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">نقطة الدخول — تعريف كل الـ Routes وحماية الصفحات</td></tr>
+      <tr><td class="td-path">  src/main.tsx</td><td class="td-type">📄 ملف</td><td class="td-desc">أول ملف يُشغَّل — يحمّل App.tsx في المتصفح</td></tr>
+      <tr><td class="td-path">  index.html</td><td class="td-type">📄 ملف</td><td class="td-desc">الصفحة HTML الوحيدة — التطبيق SPA يعمل بداخلها</td></tr>
+      <tr><td class="td-path">  vite.config.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">إعدادات سيرفر التطوير (Port, Proxy للـ API)</td></tr>
+      <tr><td class="td-path">  tailwind.config.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">ألوان وخطوط وإعدادات TailwindCSS</td></tr>
+      <tr><td class="td-path">  package.json</td><td class="td-type">📄 ملف</td><td class="td-desc">قائمة المكتبات المستخدمة وأوامر التشغيل</td></tr>
+
+      <!-- BACKEND -->
+      <tr class="row-sep"><td colspan="3" class="td-path">⚙️  artifacts/api-server/  ← السيرفر (Backend) — Express + TypeScript</td></tr>
+      <tr><td class="td-path">  src/app.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">إعداد Express — Middlewares، CORS، Sessions</td></tr>
+      <tr><td class="td-path">  src/index.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">نقطة تشغيل السيرفر — يقرأ PORT من المتغيرات</td></tr>
+      <tr class="row-folder"><td class="td-path">  src/routes/</td><td class="td-type">📁 مجلد</td><td class="td-desc">كل ملف = مجموعة endpoints لنفس الموضوع</td></tr>
+      <tr><td class="td-path indent1">auth.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">/api/auth/* — تسجيل الدخول والخروج وبيانات المستخدم</td></tr>
+      <tr><td class="td-path indent1">users.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">/api/users — إدارة المستخدمين (Admin فقط)</td></tr>
+      <tr><td class="td-path indent1">appointments.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">/api/appointments — المواعيد</td></tr>
+      <tr><td class="td-path indent1">sessions.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">/api/sessions — جلسات العلاج</td></tr>
+      <tr><td class="td-path indent1">exercises.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">/api/exercises — التمارين العلاجية</td></tr>
+      <tr><td class="td-path indent1">children.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">/api/children — بيانات الأطفال</td></tr>
+      <tr><td class="td-path indent1">specialists.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">/api/specialists — بيانات الأخصائيين</td></tr>
+      <tr><td class="td-path indent1">messages.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">/api/messages — الرسائل الداخلية</td></tr>
+      <tr><td class="td-path indent1">achievements.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">/api/achievements — شارات الإنجاز</td></tr>
+      <tr><td class="td-path indent1">notifications.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">/api/notifications — الإشعارات</td></tr>
+      <tr><td class="td-path indent1">dashboard.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">/api/dashboard — إحصائيات لوحات التحكم</td></tr>
+      <tr><td class="td-path indent1">index.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">يجمع كل الـ routes ويُسجّلها في السيرفر</td></tr>
+
+      <!-- SHARED LIB -->
+      <tr class="row-sep"><td colspan="3" class="td-path">📚  lib/  ← مكتبات مشتركة بين الواجهة والسيرفر</td></tr>
+      <tr class="row-folder"><td class="td-path">  lib/db/</td><td class="td-type">📁 مجلد</td><td class="td-desc">تعريف قاعدة البيانات بالكامل</td></tr>
+      <tr><td class="td-path indent1">src/schema/index.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">يُصدّر كل الجداول (users, sessions, exercises...)</td></tr>
+      <tr><td class="td-path indent1">src/schema/users.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">جدول المستخدمين — الأعمدة والعلاقات</td></tr>
+      <tr><td class="td-path indent1">src/schema/appointments.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">جدول المواعيد</td></tr>
+      <tr><td class="td-path indent1">src/schema/sessions.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">جدول الجلسات العلاجية</td></tr>
+      <tr><td class="td-path indent1">src/schema/exercises.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">جدول التمارين</td></tr>
+      <tr><td class="td-path indent1">src/schema/achievements.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">جدول الإنجازات والشارات</td></tr>
+      <tr><td class="td-path indent1">src/seed.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">⭐ إضافة حسابات التجربة تلقائياً عند أول تشغيل</td></tr>
+      <tr><td class="td-path indent1">drizzle.config.ts</td><td class="td-type">📄 ملف</td><td class="td-desc">إعدادات Drizzle ORM للاتصال بـ PostgreSQL</td></tr>
+      <tr class="row-folder"><td class="td-path">  lib/api-spec/</td><td class="td-type">📁 مجلد</td><td class="td-desc">توثيق الـ API بصيغة OpenAPI (JSON)</td></tr>
+      <tr class="row-folder"><td class="td-path">  lib/api-client-react/</td><td class="td-type">📁 مجلد</td><td class="td-desc">كود الاتصال بالـ API ناتج تلقائياً من الـ spec</td></tr>
+
+      <!-- ROOT FILES -->
+      <tr class="row-sep"><td colspan="3" class="td-path">📋  ملفات الجذر الرئيسية</td></tr>
+      <tr><td class="td-path">  package.json</td><td class="td-type">📄 ملف</td><td class="td-desc">إعدادات pnpm workspace وأوامر تشغيل كل الأجزاء</td></tr>
+      <tr><td class="td-path">  pnpm-workspace.yaml</td><td class="td-type">📄 ملف</td><td class="td-desc">يُعرّف الـ Monorepo — أي المجلدات هي مشاريع فرعية</td></tr>
+      <tr><td class="td-path">  tsconfig.json</td><td class="td-type">📄 ملف</td><td class="td-desc">إعدادات TypeScript المشتركة لكل المشروع</td></tr>
+      <tr><td class="td-path">  .gitignore</td><td class="td-type">📄 ملف</td><td class="td-desc">يمنع رفع node_modules و .env على GitHub</td></tr>
+    </tbody>
+  </table>
+  <div class="note">الملف الأهم الذي يجب أن تعرفيه هو <strong>App.tsx</strong> — فيه تعريف كل الصفحات وروابطها. لو أضفتِ صفحة جديدة، لازم تسجّليها هنا.</div>
+</div>
+
+<!-- ══════════════ 4. ROLES ══════════════ -->
+<div class="section" id="s4">
+  <div class="sec-header"><div class="sec-icon">👥</div><div class="sec-title c-red">٤. أدوار المستخدمين وصلاحياتهم</div></div>
+  <p class="lead">كل مستخدم عنده <strong>role</strong> محفوظ في قاعدة البيانات. عند تسجيل الدخول، السيرفر يرسله للواجهة، والواجهة تُظهر فقط الصفحات المسموح بها لذلك الدور:</p>
+  <div class="role-row">
+    <div class="role-card r-admin">
+      <div class="role-title">🔑 Admin — المدير</div>
+      <ul class="role-list">
+        <li>إدارة جميع المستخدمين (إضافة/حذف/تعديل)</li>
+        <li>إضافة وإدارة الأخصائيين</li>
+        <li>عرض جميع المواعيد في العيادة</li>
+        <li>عرض التقارير الشاملة والإحصائيات</li>
+        <li>إدارة ملفات الأطفال كاملة</li>
+        <li>صلاحيات لا محدودة على النظام</li>
+      </ul>
+    </div>
+    <div class="role-card r-spec">
+      <div class="role-title">🩺 Specialist — الأخصائي</div>
+      <ul class="role-list">
+        <li>عرض الأطفال المُحوَّلين إليه فقط</li>
+        <li>إضافة وتوثيق جلسات العلاج</li>
+        <li>إنشاء تمارين وتعيينها للأطفال</li>
+        <li>إدارة مواعيده الخاصة</li>
+        <li>مراسلة أولياء الأمور</li>
+        <li>عرض تقارير تقدم أطفاله</li>
+      </ul>
+    </div>
+    <div class="role-card r-parent">
+      <div class="role-title">👨‍👩‍👦 Parent — ولي الأمر</div>
+      <ul class="role-list">
+        <li>متابعة ملف ابنه/ابنته فقط</li>
+        <li>عرض المواعيد القادمة والسابقة</li>
+        <li>قراءة مذكرات الجلسات</li>
+        <li>التواصل مع الأخصائي بالرسائل</li>
+        <li>متابعة إنجازات الطفل</li>
+        <li>تلقي الإشعارات</li>
+      </ul>
+    </div>
+    <div class="role-card r-child">
+      <div class="role-title">🧒 Child — الطفل</div>
+      <ul class="role-list">
+        <li>واجهة مبسطة وملونة خاصة به</li>
+        <li>عرض التمارين المعينة له</li>
+        <li>تأشير التمارين المنجزة</li>
+        <li>مشاهدة نجومه وإنجازاته</li>
+        <li>لا يرى بيانات الآخرين</li>
+      </ul>
+    </div>
+  </div>
+  <p class="lead"><strong>كيف تعمل الحماية تقنياً؟</strong> الملف <code>App.tsx</code> يحتوي على مكوّن <code>ProtectedRoute</code> يتحقق من دور المستخدم قبل إظهار أي صفحة. لو حاول شخص الدخول لرابط /admin وليس مديراً، يُعاد توجيهه لصفحة تسجيل الدخول فوراً.</p>
+</div>
+
+<!-- ══════════════ 5. PAGES ══════════════ -->
+<div class="section" id="s5">
+  <div class="sec-header"><div class="sec-icon">📱</div><div class="sec-title c-orange">٥. الصفحات — كل صفحة ومكانها ووظيفتها</div></div>
+
+  <p class="lead" style="font-weight:700;color:#4c51bf;font-size:15px;">🔐 صفحة مشتركة</p>
+  <div class="pages-grid" style="margin-bottom:22px;">
+    <div class="page-card pc-shared">
+      <div class="page-ico">🔐</div>
+      <div><div class="page-name">تسجيل الدخول</div><div class="page-path">/login → src/pages/login.tsx</div><div class="page-desc">أول صفحة لأي مستخدم. يُدخل اسم المستخدم وكلمة المرور. السيرفر يتحقق، يُرجع بيانات المستخدم مع دوره، ثم يُوجَّه تلقائياً للصفحة المناسبة. إذا أخطأ كلمة المرور تظهر رسالة خطأ.</div></div>
+    </div>
+  </div>
+
+  <p class="lead" style="font-weight:700;color:#4c51bf;font-size:15px;">🔑 صفحات المدير</p>
+  <div class="pages-grid" style="margin-bottom:22px;">
+    <div class="page-card pc-admin"><div class="page-ico">📊</div><div><div class="page-name">لوحة التحكم</div><div class="page-path">/admin → src/pages/admin/index.tsx</div><div class="page-desc">نظرة شاملة على العيادة: عدد المستخدمين، المواعيد اليوم، الجلسات الأخيرة، إحصائيات عامة في بطاقات ملخص. أول ما يراه المدير.</div></div></div>
+    <div class="page-card pc-admin"><div class="page-ico">👨‍⚕️</div><div><div class="page-name">إدارة الأخصائيين</div><div class="page-path">/admin/specialists → src/pages/admin/specialists.tsx</div><div class="page-desc">قائمة بجميع الأخصائيين. يستطيع المدير إضافة أخصائي جديد بملء نموذج، تعديل بياناته، أو حذفه. التعديل يُرسل طلب PUT للـ API والحذف يُرسل DELETE.</div></div></div>
+    <div class="page-card pc-admin"><div class="page-ico">🧒</div><div><div class="page-name">ملفات الأطفال</div><div class="page-path">/admin/children → src/pages/admin/children.tsx</div><div class="page-desc">قائمة جميع الأطفال المسجلين. يمكن عرض ملف كل طفل كاملاً وتعديله وربطه بأخصائي معين.</div></div></div>
+    <div class="page-card pc-admin"><div class="page-ico">📅</div><div><div class="page-name">إدارة المواعيد</div><div class="page-path">/admin/appointments → src/pages/admin/appointments.tsx</div><div class="page-desc">عرض جميع مواعيد العيادة لجميع الأخصائيين والأطفال في جدول مع إمكانية الفلترة.</div></div></div>
+    <div class="page-card pc-admin"><div class="page-ico">👤</div><div><div class="page-name">إدارة المستخدمين</div><div class="page-path">/admin/users → src/pages/admin/users.tsx</div><div class="page-desc">إدارة حسابات جميع المستخدمين: إضافة مستخدم جديد (يحدد دوره)، تغيير كلمة المرور، تعطيل الحساب أو حذفه.</div></div></div>
+  </div>
+
+  <p class="lead" style="font-weight:700;color:#276749;font-size:15px;">🩺 صفحات الأخصائي</p>
+  <div class="pages-grid" style="margin-bottom:22px;">
+    <div class="page-card pc-spec"><div class="page-ico">📊</div><div><div class="page-name">لوحة التحكم</div><div class="page-path">/specialist → src/pages/specialist/index.tsx</div><div class="page-desc">ملخص يومي: عدد أطفاله، جلساته اليوم، المواعيد القادمة، وإحصائيات تقدم أطفاله.</div></div></div>
+    <div class="page-card pc-spec"><div class="page-ico">🧒</div><div><div class="page-name">أطفالي</div><div class="page-path">/specialist/children → src/pages/specialist/children.tsx</div><div class="page-desc">قائمة الأطفال المحولين لهذا الأخصائي. يمكن الضغط على طفل لعرض ملفه كاملاً: التشخيص، تاريخ بداية العلاج، ملاحظات.</div></div></div>
+    <div class="page-card pc-spec"><div class="page-ico">🗓️</div><div><div class="page-name">الجلسات</div><div class="page-path">/specialist/sessions → src/pages/specialist/sessions.tsx</div><div class="page-desc">تسجيل جلسات العلاج: اختيار الطفل، تاريخ الجلسة، مدتها، ملاحظات تفصيلية عن التقدم والتحديات.</div></div></div>
+    <div class="page-card pc-spec"><div class="page-ico">📅</div><div><div class="page-name">المواعيد</div><div class="page-path">/specialist/appointments → src/pages/specialist/appointments.tsx</div><div class="page-desc">إدارة مواعيد الأخصائي: تأكيد موعد، إلغاء، جدولة موعد جديد. التقويم يُظهر المواعيد بصرياً.</div></div></div>
+    <div class="page-card pc-spec"><div class="page-ico">🏋️</div><div><div class="page-name">التمارين</div><div class="page-path">/specialist/exercises → src/pages/specialist/exercises.tsx</div><div class="page-desc">إنشاء تمارين نطق جديدة وتعيينها لأطفال معينين. كل تمرين: عنوان، وصف، تعليمات خطوة بخطوة.</div></div></div>
+  </div>
+
+  <p class="lead" style="font-weight:700;color:#d97706;font-size:15px;">👨‍👩‍👦 صفحات ولي الأمر</p>
+  <div class="pages-grid" style="margin-bottom:22px;">
+    <div class="page-card pc-parent"><div class="page-ico">🏠</div><div><div class="page-name">الرئيسية</div><div class="page-path">/parent → src/pages/parent/index.tsx</div><div class="page-desc">ملخص: آخر جلسة، الموعد القادم، تقدم الطفل بصرياً، آخر الإشعارات.</div></div></div>
+    <div class="page-card pc-parent"><div class="page-ico">🧒</div><div><div class="page-name">ملف طفلي</div><div class="page-path">/parent/children → src/pages/parent/children.tsx</div><div class="page-desc">بيانات الطفل كاملة: العمر، التشخيص، الأخصائي المسؤول، نسبة التقدم العام.</div></div></div>
+    <div class="page-card pc-parent"><div class="page-ico">📅</div><div><div class="page-name">المواعيد</div><div class="page-path">/parent/appointments → src/pages/parent/appointments.tsx</div><div class="page-desc">جدول مواعيد الطفل: التاريخ، الأخصائي، الحالة (مؤكد/ملغى/منتهٍ). قراءة فقط.</div></div></div>
+    <div class="page-card pc-parent"><div class="page-ico">📋</div><div><div class="page-name">سجل الجلسات</div><div class="page-path">/parent/sessions → src/pages/parent/sessions.tsx</div><div class="page-desc">كل جلسات الطفل مع ملاحظات الأخصائي التفصيلية. يمنح الوالدين شفافية كاملة.</div></div></div>
+  </div>
+
+  <p class="lead" style="font-weight:700;color:#e53e3e;font-size:15px;">🧒 صفحات الطفل</p>
+  <div class="pages-grid" style="margin-bottom:22px;">
+    <div class="page-card pc-child"><div class="page-ico">🌟</div><div><div class="page-name">صفحتي</div><div class="page-path">/child → src/pages/child/index.tsx</div><div class="page-desc">واجهة ملونة مبهجة: تحية بالاسم، عدد النجوم المكتسبة، التمارين المنجزة اليوم، آخر إنجازاته. مصممة ليستمتع بها الطفل.</div></div></div>
+    <div class="page-card pc-child"><div class="page-ico">🏋️</div><div><div class="page-name">تماريني</div><div class="page-path">/child/exercises → src/pages/child/exercises.tsx</div><div class="page-desc">قائمة تمارين اليوم. يضغط الطفل "تم!" بعد كل تمرين فيحصل على نجمة وتظهر له احتفالية صغيرة 🎉</div></div></div>
+  </div>
+
+  <p class="lead" style="font-weight:700;color:#7c3aed;font-size:15px;">🔔 الصفحات المشتركة (لأكثر من دور)</p>
+  <div class="pages-grid">
+    <div class="page-card pc-shared">
+      <div class="page-ico">🔔</div>
+      <div>
+        <div class="page-name">الإشعارات</div>
+        <div class="page-path">/notifications → src/pages/shared/notifications.tsx</div>
+        <div class="page-desc"><strong>من يراها:</strong> جميع الأدوار الأربعة.<br/>
+        <strong>الوظيفة:</strong> تعرض كل الإشعارات الخاصة بالمستخدم المسجّل: موعد جديد جُدوِل، رسالة وردت، جلسة تمت، تمرين جديد أُضيف. كل إشعار يُظهر وقته ونوعه ورابط للصفحة المرتبطة.<br/>
+        <strong>ملاحظة تقنية:</strong> الإشعارات تُجلب من /api/notifications وتُصفَّى بالـ userId تلقائياً — كل مستخدم يرى إشعاراته فقط.</div>
+      </div>
+    </div>
+    <div class="page-card pc-shared">
+      <div class="page-ico">💬</div>
+      <div>
+        <div class="page-name">الرسائل</div>
+        <div class="page-path">/messages → src/pages/shared/messages.tsx</div>
+        <div class="page-desc"><strong>من يراها:</strong> Admin، Specialist، Parent (الطفل لا يرى الرسائل).<br/>
+        <strong>الوظيفة:</strong> نظام رسائل داخلي مثل البريد الإلكتروني. يمكن الأخصائي مراسلة ولي الأمر مباشرة، والمدير مراسلة أي شخص. الرسائل مخزنة في جدول messages في قاعدة البيانات ومرتبطة بـ senderId و receiverId.<br/>
+        <strong>لتعديل:</strong> src/pages/shared/messages.tsx + src/routes/messages.ts في السيرفر.</div>
+      </div>
+    </div>
+    <div class="page-card pc-shared">
+      <div class="page-ico">🏆</div>
+      <div>
+        <div class="page-name">الإنجازات</div>
+        <div class="page-path">/child/achievements و /parent/achievements → src/pages/shared/achievements.tsx</div>
+        <div class="page-desc"><strong>من يراها:</strong> الطفل وولي الأمر.<br/>
+        <strong>الوظيفة:</strong> تعرض شارات الإنجاز التي كسبها الطفل: "أتممت 5 تمارين"، "حضرت 10 جلسات"، "أسبوع منتظم". كل إنجاز له اسم وأيقونة وتاريخ كسبه. الهدف: تحفيز الطفل واستمراره.<br/>
+        <strong>لإضافة إنجاز جديد:</strong> أضيفيه في جدول achievements بقاعدة البيانات عبر API أو pgAdmin.</div>
+      </div>
+    </div>
+    <div class="page-card pc-shared">
+      <div class="page-ico">📈</div>
+      <div>
+        <div class="page-name">التقارير</div>
+        <div class="page-path">/admin/reports و /specialist/reports → src/pages/shared/reports.tsx</div>
+        <div class="page-desc"><strong>من يراها:</strong> Admin، Specialist.<br/>
+        <strong>الوظيفة:</strong> تقارير مرئية (رسوم بيانية) لتقدم الأطفال: عدد الجلسات أسبوعياً، نسبة إنجاز التمارين، مقارنة التقدم بين الشهور. البيانات تأتي من /api/reports وتُعرض بمكتبة Recharts.<br/>
+        <strong>لتعديل الرسوم البيانية:</strong> src/pages/shared/reports.tsx — ابحثي عن &lt;BarChart&gt; أو &lt;LineChart&gt;.</div>
+      </div>
+    </div>
+    <div class="page-card pc-shared">
+      <div class="page-ico">⚙️</div>
+      <div>
+        <div class="page-name">الإعدادات</div>
+        <div class="page-path">/settings → src/pages/shared/settings.tsx</div>
+        <div class="page-desc"><strong>من يراها:</strong> جميع الأدوار الأربعة.<br/>
+        <strong>الوظيفة:</strong> إعدادات الحساب الشخصي: تغيير كلمة المرور، اختيار اللغة (عربي RTL / إنجليزي LTR)، تغيير المظهر (فاتح/غامق Dark Mode)، تعديل معلومات الملف الشخصي.<br/>
+        <strong>ملاحظة تقنية:</strong> اللغة والمظهر يُحفظان في localStorage في المتصفح — أي عند إغلاق الصفحة وفتحها تبقى الإعدادات كما هي. ملف اللغة: src/lib/i18n.tsx، ملف المظهر: src/lib/theme.tsx.</div>
+      </div>
+    </div>
+    <div class="page-card pc-shared">
+      <div class="page-ico">🚫</div>
+      <div>
+        <div class="page-name">صفحة 404 — الصفحة غير موجودة</div>
+        <div class="page-path">أي رابط غير مسجّل → src/pages/not-found.tsx</div>
+        <div class="page-desc"><strong>من يراها:</strong> أي مستخدم يكتب رابطاً غير موجود.<br/>
+        <strong>الوظيفة:</strong> إذا دخل أحد لرابط غير موجود مثل /xyz تظهر هذه الصفحة. في App.tsx آخر Route هو catch-all يصطاد أي رابط غير معرّف.</div>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+  <br/>
+  <p class="lead" style="font-weight:800;font-size:16px;">📂 الملفات المهمة — شرح كامل:</p>
+  <div class="lib-grid">
+    <div class="lib-card lib-f1">
+      <div class="lib-fname">📄 api.ts</div>
+      <div class="lib-fpath">artifacts/speech-clinic/src/lib/api.ts</div>
+      <div class="lib-fdesc">دوال الاتصال بالـ API. تحتوي على <code>fetchWithCredentials</code> التي ترسل كل الطلبات مع الـ cookies (للـ session). تتعامل مع أخطاء الشبكة وتُحوّل الردود لـ JSON تلقائياً.</div>
+    </div>
+    <div class="lib-card lib-f2">
+      <div class="lib-fname">📄 i18n.tsx</div>
+      <div class="lib-fpath">artifacts/speech-clinic/src/lib/i18n.tsx</div>
+      <div class="lib-fdesc">جميع نصوص الموقع بالعربي والإنجليزي في مكان واحد. إذا أردتِ تغيير أي كلمة في الموقع، غيّريها هنا. يوفّر <code>useI18n()</code> hook للوصول للترجمات.</div>
+    </div>
+    <div class="lib-card lib-f3">
+      <div class="lib-fname">📄 theme.tsx</div>
+      <div class="lib-fpath">artifacts/speech-clinic/src/lib/theme.tsx</div>
+      <div class="lib-fdesc">منطق الوضع الفاتح (Light) والغامق (Dark). يحفظ الاختيار في <code>localStorage</code> فيبقى بعد إغلاق الصفحة. يُضيف class على الـ HTML لتفعيل Tailwind dark mode.</div>
+    </div>
+    <div class="lib-card lib-f4">
+      <div class="lib-fname">📄 sounds.tsx</div>
+      <div class="lib-fpath">artifacts/speech-clinic/src/lib/sounds.tsx</div>
+      <div class="lib-fdesc">أصوات الاحتفال (تصفيق، نجوم...) عند إنجاز الطفل تمريناً. يُشغّل صوتاً قصيراً عبر Web Audio API لمكافأة الطفل بشكل لطيف.</div>
+    </div>
+    <div class="lib-card lib-f5">
+      <div class="lib-fname">📄 format.ts</div>
+      <div class="lib-fpath">artifacts/speech-clinic/src/lib/format.ts</div>
+      <div class="lib-fdesc">دوال تنسيق التواريخ والأرقام. تحوّل التاريخ من <code>2024-01-15</code> إلى "١٥ يناير ٢٠٢٤" بالعربي. تُستخدم في كل مكان في الجداول والبطاقات.</div>
+    </div>
+    <div class="lib-card lib-f6">
+      <div class="lib-fname">📄 utils.ts</div>
+      <div class="lib-fpath">artifacts/speech-clinic/src/lib/utils.ts</div>
+      <div class="lib-fdesc">دوال مساعدة عامة. الأهم: <code>cn(...classes)</code> تدمج أسماء CSS classes بشكل ذكي (من مكتبة clsx+tailwind-merge) وتُستخدم في كل مكوّن.</div>
+    </div>
+    <div class="lib-card lib-f7">
+      <div class="lib-fname">📄 use-auth.tsx</div>
+      <div class="lib-fpath">artifacts/speech-clinic/src/hooks/use-auth.tsx</div>
+      <div class="lib-fdesc">Hook لإدارة حالة المستخدم. يُوفّر: <code>user</code> (بيانات المستخدم الحالي)، <code>login()</code>، <code>logout()</code>، <code>isLoading</code>. يُستخدم في كل صفحة تحتاج تعرف "من هو المستخدم".</div>
+    </div>
+    <div class="lib-card lib-f8">
+      <div class="lib-fname">📄 use-toast.tsx</div>
+      <div class="lib-fpath">artifacts/speech-clinic/src/hooks/use-toast.tsx</div>
+      <div class="lib-fdesc">Hook لعرض إشعارات سريعة (Toast). مثل: "تم حفظ التغييرات ✓" أو "حدث خطأ ✗". يظهر لثوانٍ ثم يختفي تلقائياً.</div>
+    </div>
+    <div class="lib-card lib-f9">
+      <div class="lib-fname">⭐ App.tsx</div>
+      <div class="lib-fpath">artifacts/speech-clinic/src/App.tsx</div>
+      <div class="lib-fdesc">قلب التطبيق. يُعرّف كل الـ Routes (الروابط) ويربطها بصفحاتها. يحتوي <code>ProtectedRoute</code> الذي يمنع الوصول لصفحة بدون صلاحية ويُعيد توجيه لصفحة تسجيل الدخول.</div>
+    </div>
+    <div class="lib-card lib-f10">
+      <div class="lib-fname">📄 lib/db/src/seed.ts</div>
+      <div class="lib-fpath">lib/db/src/seed.ts</div>
+      <div class="lib-fdesc">يُضيف حسابات التجربة الأربعة تلقائياً في قاعدة البيانات. شغّليه مرة واحدة عند أول تشغيل: <code>pnpm --filter @workspace/db run seed</code></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 6. BACKEND ══════════════ -->
+<div class="section" id="s6">
+  <div class="sec-header"><div class="sec-icon">⚙️</div><div class="sec-title c-teal">٦. السيرفر (Backend) وكيف يعمل</div></div>
+  <p class="lead">السيرفر هو "المحرك الخفي". الواجهة <strong>لا تخزن بيانات إطلاقاً</strong> — كل ما تفعله هو طلب بيانات من السيرفر وعرضها.</p>
+  <div class="note">مثال حي: تفتحين صفحة المواعيد ← React يُرسل: <strong>GET /api/appointments</strong> ← Express يستقبله ← يسأل PostgreSQL ← PostgreSQL يُرجع الصفوف ← Express يُحوّلها لـ JSON ← يُرسلها للواجهة ← React يعرضها في جدول.</div>
+  <br/>
+  <table class="api-table">
+    <thead><tr><th>الـ Endpoint</th><th>الطريقة</th><th>الوظيفة</th><th>من يستطيع استخدامه</th></tr></thead>
+    <tbody>
+      <tr><td>/api/auth/login</td><td><span class="method mp">POST</span></td><td>تسجيل الدخول</td><td>الجميع</td></tr>
+      <tr><td>/api/auth/logout</td><td><span class="method mp">POST</span></td><td>تسجيل الخروج</td><td>الجميع</td></tr>
+      <tr><td>/api/auth/me</td><td><span class="method mg">GET</span></td><td>بيانات المستخدم الحالي</td><td>الجميع المسجلين</td></tr>
+      <tr><td>/api/users</td><td><span class="method mg">GET</span></td><td>قائمة المستخدمين</td><td>Admin</td></tr>
+      <tr><td>/api/users</td><td><span class="method mp">POST</span></td><td>إضافة مستخدم جديد</td><td>Admin</td></tr>
+      <tr><td>/api/users/:id</td><td><span class="method mpu">PUT</span></td><td>تعديل مستخدم</td><td>Admin</td></tr>
+      <tr><td>/api/users/:id</td><td><span class="method md">DELETE</span></td><td>حذف مستخدم</td><td>Admin</td></tr>
+      <tr><td>/api/specialists</td><td><span class="method mg">GET</span></td><td>قائمة الأخصائيين</td><td>Admin</td></tr>
+      <tr><td>/api/children</td><td><span class="method mg">GET</span></td><td>قائمة الأطفال</td><td>Admin, Specialist</td></tr>
+      <tr><td>/api/appointments</td><td><span class="method mg">GET</span></td><td>المواعيد</td><td>الكل</td></tr>
+      <tr><td>/api/appointments</td><td><span class="method mp">POST</span></td><td>إضافة موعد</td><td>Admin, Specialist</td></tr>
+      <tr><td>/api/sessions</td><td><span class="method mg">GET</span></td><td>الجلسات</td><td>Specialist, Parent</td></tr>
+      <tr><td>/api/sessions</td><td><span class="method mp">POST</span></td><td>إضافة جلسة</td><td>Specialist</td></tr>
+      <tr><td>/api/exercises</td><td><span class="method mg">GET</span></td><td>التمارين</td><td>Specialist, Child</td></tr>
+      <tr><td>/api/exercises</td><td><span class="method mp">POST</span></td><td>إنشاء تمرين</td><td>Specialist</td></tr>
+      <tr><td>/api/messages</td><td><span class="method mg">GET</span></td><td>الرسائل</td><td>Admin, Specialist, Parent</td></tr>
+      <tr><td>/api/achievements</td><td><span class="method mg">GET</span></td><td>الإنجازات</td><td>Child, Parent</td></tr>
+      <tr><td>/api/dashboard</td><td><span class="method mg">GET</span></td><td>إحصائيات لوحة التحكم</td><td>Admin, Specialist</td></tr>
+      <tr><td>/api/notifications</td><td><span class="method mg">GET</span></td><td>الإشعارات</td><td>الكل</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════ 7. DB ══════════════ -->
+<div class="section" id="s7">
+  <div class="sec-header"><div class="sec-icon">🗄️</div><div class="sec-title c-blue">٧. قاعدة البيانات وجداولها</div></div>
+  <p class="lead">قاعدة البيانات تحتوي <strong>10 جداول مترابطة</strong>. الربط بينها يتم عبر المفاتيح الخارجية (Foreign Keys) — مثلاً كل موعد في جدول appointments يحمل رقم الطفل (childId) الذي يرجع لجدول children.</p>
+  <div class="db-grid">
+    <div class="db-card"><div class="db-title">users</div><div class="db-field"><span class="dfn">id</span><span class="dft">رقم فريد</span></div><div class="db-field"><span class="dfn">username</span><span class="dft">اسم المستخدم (فريد)</span></div><div class="db-field"><span class="dfn">password</span><span class="dft">كلمة مرور مشفرة bcrypt</span></div><div class="db-field"><span class="dfn">role</span><span class="dft">admin/specialist/parent/child</span></div><div class="db-field"><span class="dfn">name</span><span class="dft">الاسم الكامل</span></div><div class="db-field"><span class="dfn">email</span><span class="dft">البريد الإلكتروني</span></div></div>
+    <div class="db-card"><div class="db-title">specialists</div><div class="db-field"><span class="dfn">id</span><span class="dft">رقم فريد</span></div><div class="db-field"><span class="dfn">userId</span><span class="dft">→ يشير لـ users.id</span></div><div class="db-field"><span class="dfn">specialization</span><span class="dft">التخصص (نطق/لغة...)</span></div><div class="db-field"><span class="dfn">licenseNumber</span><span class="dft">رقم الترخيص</span></div><div class="db-field"><span class="dfn">yearsExperience</span><span class="dft">سنوات الخبرة</span></div></div>
+    <div class="db-card"><div class="db-title">children</div><div class="db-field"><span class="dfn">id</span><span class="dft">رقم فريد</span></div><div class="db-field"><span class="dfn">userId</span><span class="dft">→ حساب الطفل</span></div><div class="db-field"><span class="dfn">parentId</span><span class="dft">→ حساب ولي الأمر</span></div><div class="db-field"><span class="dfn">specialistId</span><span class="dft">→ الأخصائي المسؤول</span></div><div class="db-field"><span class="dfn">dateOfBirth</span><span class="dft">تاريخ الميلاد</span></div><div class="db-field"><span class="dfn">diagnosis</span><span class="dft">التشخيص الطبي</span></div></div>
+    <div class="db-card"><div class="db-title">appointments</div><div class="db-field"><span class="dfn">id</span><span class="dft">رقم فريد</span></div><div class="db-field"><span class="dfn">childId</span><span class="dft">→ الطفل</span></div><div class="db-field"><span class="dfn">specialistId</span><span class="dft">→ الأخصائي</span></div><div class="db-field"><span class="dfn">scheduledAt</span><span class="dft">تاريخ ووقت الموعد</span></div><div class="db-field"><span class="dfn">status</span><span class="dft">scheduled/done/cancelled</span></div></div>
+    <div class="db-card"><div class="db-title">sessions</div><div class="db-field"><span class="dfn">id</span><span class="dft">رقم فريد</span></div><div class="db-field"><span class="dfn">childId</span><span class="dft">→ الطفل</span></div><div class="db-field"><span class="dfn">specialistId</span><span class="dft">→ الأخصائي</span></div><div class="db-field"><span class="dfn">notes</span><span class="dft">ملاحظات الجلسة</span></div><div class="db-field"><span class="dfn">sessionDate</span><span class="dft">تاريخ الجلسة</span></div><div class="db-field"><span class="dfn">duration</span><span class="dft">المدة بالدقائق</span></div></div>
+    <div class="db-card"><div class="db-title">exercises</div><div class="db-field"><span class="dfn">id</span><span class="dft">رقم فريد</span></div><div class="db-field"><span class="dfn">childId</span><span class="dft">→ الطفل المعين له</span></div><div class="db-field"><span class="dfn">title</span><span class="dft">اسم التمرين</span></div><div class="db-field"><span class="dfn">description</span><span class="dft">وصف وتعليمات</span></div><div class="db-field"><span class="dfn">completed</span><span class="dft">true/false</span></div></div>
+    <div class="db-card"><div class="db-title">progress</div><div class="db-field"><span class="dfn">id</span><span class="dft">رقم فريد</span></div><div class="db-field"><span class="dfn">childId</span><span class="dft">→ الطفل</span></div><div class="db-field"><span class="dfn">score</span><span class="dft">درجة التقييم</span></div><div class="db-field"><span class="dfn">notes</span><span class="dft">ملاحظات التقدم</span></div><div class="db-field"><span class="dfn">recordedAt</span><span class="dft">تاريخ التسجيل</span></div></div>
+    <div class="db-card"><div class="db-title">achievements</div><div class="db-field"><span class="dfn">id</span><span class="dft">رقم فريد</span></div><div class="db-field"><span class="dfn">childId</span><span class="dft">→ الطفل</span></div><div class="db-field"><span class="dfn">title</span><span class="dft">اسم الإنجاز</span></div><div class="db-field"><span class="dfn">icon</span><span class="dft">رمز الشارة</span></div><div class="db-field"><span class="dfn">earnedAt</span><span class="dft">تاريخ التحقيق</span></div></div>
+    <div class="db-card"><div class="db-title">messages</div><div class="db-field"><span class="dfn">id</span><span class="dft">رقم فريد</span></div><div class="db-field"><span class="dfn">senderId</span><span class="dft">→ المُرسِل</span></div><div class="db-field"><span class="dfn">receiverId</span><span class="dft">→ المُستقبِل</span></div><div class="db-field"><span class="dfn">content</span><span class="dft">نص الرسالة</span></div><div class="db-field"><span class="dfn">sentAt</span><span class="dft">وقت الإرسال</span></div></div>
+    <div class="db-card"><div class="db-title">notifications</div><div class="db-field"><span class="dfn">id</span><span class="dft">رقم فريد</span></div><div class="db-field"><span class="dfn">userId</span><span class="dft">→ المستخدم المُخطَر</span></div><div class="db-field"><span class="dfn">message</span><span class="dft">نص الإشعار</span></div><div class="db-field"><span class="dfn">read</span><span class="dft">هل قُرئ؟</span></div><div class="db-field"><span class="dfn">createdAt</span><span class="dft">وقت الإنشاء</span></div></div>
+  </div>
+</div>
+
+<!-- ══════════════ 8. PGADMIN ══════════════ -->
+<div class="section" id="s8">
+  <div class="sec-header"><div class="sec-icon">🐘</div><div class="sec-title c-green">٨. pgAdmin 4 — ما هي وكيف نربطها بالمشروع</div></div>
+  <p class="lead"><strong>pgAdmin 4</strong> هي برنامج رسومي (واجهة مرئية) لإدارة قواعد بيانات PostgreSQL. بدلاً من كتابة أوامر SQL في سطر الأوامر، تستخدمين واجهة بسيطة بالنقر. يمكن إنشاء قواعد البيانات، عرض الجداول، تعديل البيانات، وتنفيذ استعلامات.</p>
+  <div class="tip">فكّري بـ pgAdmin كـ "Excel الذكي" لقاعدة البيانات — ترين كل الجداول وبياناتها بشكل مرتب وتقدرين تعدلين عليها.</div>
+  <br/>
+  <p class="lead" style="font-weight:700;">📥 خطوات التثبيت والربط مع المشروع:</p>
+  <div class="pg-steps">
+    <div class="pg-step"><div class="pg-num">1</div><div class="pg-title">تثبيت PostgreSQL</div><div class="pg-desc">حمّلي من <strong>postgresql.org/download</strong> واختاري Windows. ثبّتيه مع pgAdmin 4 (يأتي معه). ضعي كلمة مرور للمستخدم <em>postgres</em> (مثلاً: 123456) واحفظيها.</div></div>
+    <div class="pg-step"><div class="pg-num">2</div><div class="pg-title">فتح pgAdmin 4</div><div class="pg-desc">ابحثي في Start Menu عن <strong>pgAdmin 4</strong> وافتحيه. سيفتح في المتصفح تلقائياً. أدخلي كلمة المرور التي وضعتيها.</div></div>
+    <div class="pg-step"><div class="pg-num">3</div><div class="pg-title">إنشاء قاعدة البيانات</div><div class="pg-desc">في الشريط الجانبي: Servers ← PostgreSQL ← Databases ← (كليك يمين) ← Create ← Database. اكتبي الاسم: <strong>speech_clinic</strong> ثم Save.</div></div>
+    <div class="pg-step"><div class="pg-num">4</div><div class="pg-title">ربطها بالمشروع</div><div class="pg-desc">في PowerShell اكتبي: <code>$env:DATABASE_URL="postgres://postgres:123456@localhost:5432/speech_clinic"</code> — هذا السطر يخبر المشروع بمكان قاعدة البيانات.</div></div>
+    <div class="pg-step"><div class="pg-num">5</div><div class="pg-title">رفع الجداول</div><div class="pg-desc">شغّلي: <code>pnpm --filter @workspace/db run push</code> — هذا ينشئ كل الجداول (users, appointments...) تلقائياً في pgAdmin.</div></div>
+    <div class="pg-step"><div class="pg-num">6</div><div class="pg-title">إضافة بيانات تجريبية</div><div class="pg-desc">شغّلي: <code>pnpm --filter @workspace/db run seed</code> — هذا يضيف حسابات المستخدمين التجريبية (admin, specialist, parent, child).</div></div>
+    <div class="pg-step"><div class="pg-num">7</div><div class="pg-title">عرض البيانات في pgAdmin</div><div class="pg-desc">في pgAdmin: speech_clinic ← Schemas ← public ← Tables ← اختاري users ← كليك يمين ← View/Edit Data ← All Rows. ستري كل المستخدمين!</div></div>
+    <div class="pg-step"><div class="pg-num">8</div><div class="pg-title">تعديل بيانات مباشرة</div><div class="pg-desc">من نفس الشاشة تقدرين تعدلين على الخلايا مباشرة وتحفظين. أو اكتبي SQL يدوياً بالضغط على أيقونة Query Tool وكتابة: <code>UPDATE users SET name='اسم جديد' WHERE id=1;</code></div></div>
+  </div>
+  <div class="warn">إذا ظهرت رسالة خطأ "connection refused" تأكدي أن خدمة PostgreSQL تعمل: ابحثي في Services عن postgresql وتأكدي أنها Running.</div>
+</div>
+
+<!-- ══════════════ 9. RUN ON NEW LAPTOP ══════════════ -->
+<div class="section" id="s9">
+  <div class="sec-header"><div class="sec-icon">🚀</div><div class="sec-title c-purple">٩. تشغيل المشروع على لابتوب جديد — خطوة بخطوة</div></div>
+
+  <p class="lead" style="font-weight:800;font-size:17px;color:#4c51bf;">أولاً: تثبيت البرامج المطلوبة (مرة واحدة فقط)</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">تثبيت Node.js</div>
+        <div class="step-desc">حمّلي من <strong>nodejs.org</strong> — اختاري النسخة LTS (الأكثر استقراراً). Node.js هو البيئة التي تُشغّل الكود. بعد التثبيت افتحي PowerShell وتحققي:</div>
+        <div class="code-block">node --version    <span class="cg"># يجب أن يظهر v20 أو أعلى</span>
+npm --version    <span class="cg"># يأتي مع Node.js تلقائياً</span></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">تثبيت pnpm</div>
+        <div class="step-desc">pnpm هو مدير الحزم الذي يستخدمه مشروعنا. شغّلي في PowerShell:</div>
+        <div class="code-block">npm install -g pnpm
+pnpm --version   <span class="cg"># تحقق من التثبيت</span></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">تثبيت PostgreSQL + pgAdmin 4</div>
+        <div class="step-desc">حمّلي من <strong>postgresql.org/download/windows</strong> — نسخة 16 أو أعلى. خلال التثبيت: ضعي كلمة مرور للمستخدم postgres (مثلاً: 123456) واحفظيها. تأكدي أن pgAdmin 4 محدد في التثبيت.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">تثبيت Git</div>
+        <div class="step-desc">حمّلي من <strong>git-scm.com</strong> (اختاري كل الإعدادات الافتراضية). Git يُمكّنك من تحميل المشروع من GitHub.</div>
+        <div class="code-block">git --version   <span class="cg"># تحقق</span></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">تثبيت VS Code</div>
+        <div class="step-desc">حمّلي من <strong>code.visualstudio.com</strong>. بعد التثبيت أضيفي هذه الامتدادات من Extensions (Ctrl+Shift+X):</div>
+        <div class="code-block"><span class="cy">العلامة</span>   ESLint             <span class="cg">← يكشف أخطاء الكود</span>
+<span class="cy">العلامة</span>   Tailwind CSS IntelliSense <span class="cg">← autocomplete للتصميم</span>
+<span class="cy">العلامة</span>   Prettier          <span class="cg">← تنسيق الكود تلقائياً</span>
+<span class="cy">العلامة</span>   TypeScript Hero   <span class="cg">← مساعد TypeScript</span>
+<span class="cy">العلامة</span>   GitLens           <span class="cg">← عرض تاريخ التعديلات</span></div>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+  <p class="lead" style="font-weight:800;font-size:17px;color:#276749;">ثانياً: تحميل المشروع من GitHub وتشغيله</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-title">تحميل المشروع من GitHub</div>
+        <div class="step-desc">افتحي PowerShell واختاري مجلد تريدين حفظ المشروع فيه (مثلاً Desktop):</div>
+        <div class="code-block">cd Desktop
+git clone https://github.com/aoalsawaie22/speech-clinic.git
+cd speech-clinic</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <div class="step-title">فتح المشروع في VS Code</div>
+        <div class="step-desc">من نفس PowerShell شغّلي:</div>
+        <div class="code-block">code .</div>
+        <div class="step-desc">سيفتح VS Code بكامل المشروع. ستري كل المجلدات في الشريط الجانبي.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">8</div>
+      <div class="step-body">
+        <div class="step-title">إنشاء قاعدة البيانات في pgAdmin</div>
+        <div class="step-desc">افتحي pgAdmin 4 ← Databases ← Create ← Database ← اكتبي: <strong>speech_clinic</strong> ← Save.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">9</div>
+      <div class="step-body">
+        <div class="step-title">تثبيت المكتبات</div>
+        <div class="step-desc">في VS Code افتحي Terminal (Ctrl+`) أو Terminal من القائمة وشغّلي:</div>
+        <div class="code-block">pnpm install   <span class="cg"># ينزّل كل المكتبات المطلوبة</span></div>
+        <div class="step-desc">انتظري حتى ينتهي (قد يأخذ دقيقة أو دقيتين).</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">10</div>
+      <div class="step-body">
+        <div class="step-title">رفع جداول قاعدة البيانات</div>
+        <div class="step-desc">في Terminal شغّلي الأوامر التالية (غيّري 123456 بكلمة مرورك):</div>
+        <div class="code-block">$env:DATABASE_URL="postgres://postgres:123456@localhost:5432/speech_clinic"
+pnpm --filter @workspace/db run push    <span class="cg"># ينشئ الجداول</span>
+pnpm --filter @workspace/db run seed   <span class="cg"># يضيف بيانات تجريبية</span></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">11</div>
+      <div class="step-body">
+        <div class="step-title">تشغيل السيرفر (افتحي Terminal جديد)</div>
+        <div class="step-desc">في VS Code اضغطي "+" في شريط Terminal لفتح terminal جديد. شغّلي:</div>
+        <div class="code-block">$env:DATABASE_URL="postgres://postgres:123456@localhost:5432/speech_clinic"
+$env:SESSION_SECRET="my-secret-key-123456"
+$env:PORT="5000"
+$env:NODE_ENV="development"
+pnpm --filter @workspace/api-server run dev</div>
+        <div class="step-desc">ستظهر رسالة: <strong>Server running on port 5000</strong> — اتركي هذا Terminal مفتوحاً.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">12</div>
+      <div class="step-body">
+        <div class="step-title">تشغيل الواجهة (افتحي Terminal ثالث)</div>
+        <div class="step-desc">اضغطي "+" مجدداً لـ Terminal جديد وشغّلي:</div>
+        <div class="code-block">$env:PORT="5173"
+$env:BASE_PATH="/"
+pnpm --filter @workspace/speech-clinic run dev</div>
+        <div class="step-desc">ستظهر: <strong>Local: http://localhost:5173</strong></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">13</div>
+      <div class="step-body">
+        <div class="step-title">افتحي المتصفح</div>
+        <div class="step-desc">اذهبي لـ <strong>http://localhost:5173</strong> — ستظهر صفحة تسجيل الدخول. جرّبي بـ admin / admin123</div>
+      </div>
+    </div>
+  </div>
+  <div class="tip">في VS Code يمكنك رؤية كل الـ Terminals في نفس المكان من أسفل الشاشة. لا تغلقي أياً منها أثناء العمل على المشروع.</div>
+  <div class="warn">لو ظهرت رسالة "port in use" — غيّري الرقم. مثلاً PORT="5001" للسيرفر.</div>
+</div>
+
+<!-- ══════════════ 10. EDIT GUIDE ══════════════ -->
+<div class="section" id="s10">
+  <div class="sec-header"><div class="sec-icon">✏️</div><div class="sec-title c-red">١٠. كيف تعدّل أو تضيف على الكود</div></div>
+
+  <div class="edit-card ec1">
+    <div class="edit-title">🎨 تعديل تصميم أو نص في صفحة موجودة</div>
+    <div class="edit-path">artifacts/speech-clinic/src/pages/[الدور]/[اسم الصفحة].tsx</div>
+    <div class="edit-desc">مثال: بدكِ تغيّري لون زر في صفحة مواعيد الأخصائي. افتحي <strong>src/pages/specialist/appointments.tsx</strong> في VS Code. ابحثي عن النص أو الزر (Ctrl+F). غيّري className أو النص. بمجرد الحفظ (Ctrl+S) يتحدث المتصفح تلقائياً!</div>
+  </div>
+
+  <div class="edit-card ec2">
+    <div class="edit-title">➕ إضافة صفحة جديدة</div>
+    <div class="edit-path">src/pages/ ثم src/App.tsx</div>
+    <div class="edit-desc">
+      <strong>خطوة 1:</strong> أنشئي ملف جديد في المجلد المناسب. مثلاً: <code>src/pages/specialist/feedback.tsx</code><br/>
+      <strong>خطوة 2:</strong> اكتبي المكوّن الأساسي:
+      <div class="code-block"><span class="cp">export default function</span> <span class="cw">FeedbackPage</span>() {
+  <span class="cp">return</span> (
+    &lt;div className=<span class="cg">"p-6"</span>&gt;
+      &lt;h1&gt;<span class="cg">التغذية الراجعة</span>&lt;/h1&gt;
+    &lt;/div&gt;
+  );
+}</div>
+      <strong>خطوة 3:</strong> سجّليها في <code>App.tsx</code>:
+      <div class="code-block"><span class="cp">import</span> FeedbackPage <span class="cp">from</span> <span class="cg">"@/pages/specialist/feedback"</span>;
+<span class="cm">// ثم داخل Router:</span>
+&lt;Route path=<span class="cg">"/specialist/feedback"</span>&gt;
+  &lt;ProtectedRoute component={FeedbackPage} allowedRoles={[<span class="cg">"specialist"</span>]} /&gt;
+&lt;/Route&gt;</div>
+    </div>
+  </div>
+
+  <div class="edit-card ec3">
+    <div class="edit-title">🔌 إضافة endpoint جديد للـ API</div>
+    <div class="edit-path">artifacts/api-server/src/routes/ ثم routes/index.ts</div>
+    <div class="edit-desc">
+      <strong>خطوة 1:</strong> أنشئي ملف مثل <code>feedback.ts</code>:
+      <div class="code-block"><span class="cp">import</span> { Router } <span class="cp">from</span> <span class="cg">"express"</span>;
+<span class="cp">const</span> router = Router();
+
+router.get(<span class="cg">"/"</span>, async (req, res) =&gt; {
+  res.json({ message: <span class="cg">"التغذية الراجعة"</span> });
+});
+
+<span class="cp">export default</span> router;</div>
+      <strong>خطوة 2:</strong> سجّليه في <code>routes/index.ts</code>:
+      <div class="code-block"><span class="cp">import</span> feedbackRouter <span class="cp">from</span> <span class="cg">"./feedback"</span>;
+app.use(<span class="cg">"/api/feedback"</span>, feedbackRouter);</div>
+    </div>
+  </div>
+
+  <div class="edit-card ec4">
+    <div class="edit-title">🗄️ إضافة جدول جديد لقاعدة البيانات</div>
+    <div class="edit-path">lib/db/src/schema/ ثم run push</div>
+    <div class="edit-desc">
+      <strong>خطوة 1:</strong> أنشئي ملف <code>lib/db/src/schema/feedback.ts</code>:
+      <div class="code-block"><span class="cp">import</span> { pgTable, serial, text, timestamp } <span class="cp">from</span> <span class="cg">"drizzle-orm/pg-core"</span>;
+
+<span class="cp">export const</span> feedback = pgTable(<span class="cg">"feedback"</span>, {
+  id: serial(<span class="cg">"id"</span>).primaryKey(),
+  content: text(<span class="cg">"content"</span>).notNull(),
+  createdAt: timestamp(<span class="cg">"created_at"</span>).defaultNow(),
+});</div>
+      <strong>خطوة 2:</strong> أضيفي في <code>lib/db/src/schema/index.ts</code>:
+      <div class="code-block"><span class="cp">export</span> * <span class="cp">from</span> <span class="cg">"./feedback"</span>;</div>
+      <strong>خطوة 3:</strong> شغّلي لرفع الجدول:
+      <div class="code-block">pnpm --filter @workspace/db run push</div>
+    </div>
+  </div>
+
+  <div class="edit-card ec5">
+    <div class="edit-title">🌐 تعديل النصوص والترجمة</div>
+    <div class="edit-path">artifacts/speech-clinic/src/lib/i18n.tsx</div>
+    <div class="edit-desc">جميع نصوص الواجهة مركزة هنا. ابحثي عن الكلمة المراد تغييرها. لو كانت موجودة هنا، تغييرها يُحدّثها في كل مكان تظهر فيه تلقائياً.</div>
+  </div>
+
+  <div class="edit-card ec6">
+    <div class="edit-title">🎨 تغيير ألوان التصميم العامة</div>
+    <div class="edit-path">artifacts/speech-clinic/tailwind.config.ts + src/index.css</div>
+    <div class="edit-desc">الألوان الأساسية للتطبيق معرّفة كـ CSS Variables في <code>index.css</code>. تغييرها يُغيّر لون التطبيق كاملاً. في <code>tailwind.config.ts</code> تجدين تعريف الـ theme الخاص بالتطبيق.</div>
+  </div>
+</div>
+
+<!-- ══════════════ 11. GITHUB ══════════════ -->
+<div class="section" id="s11">
+  <div class="sec-header"><div class="sec-icon">🐙</div><div class="sec-title c-pink">١١. GitHub — رفع التعديلات والعمل الجماعي</div></div>
+  <p class="lead"><strong>GitHub</strong> هو منصة لحفظ الكود على السحابة ومشاركته بين أعضاء الفريق. المشروع مرفوع على: <strong>github.com/aoalsawaie22/speech-clinic</strong></p>
+  <div class="note">Git هو النظام المحلي لتتبع التغييرات. GitHub هو الموقع الذي يحفظ النسخة السحابية. الفرق: Git على جهازك، GitHub على الإنترنت.</div>
+  <br/>
+
+  <p class="lead" style="font-weight:700;">📤 كيف ترفعين تعديلاتك على GitHub:</p>
+  <div class="gh-flow">
+    <div class="gh-step">
+      <div class="gh-icon">1️⃣</div>
+      <div><div class="gh-title">تحققي من التعديلات</div><div class="gh-desc">بعد أن تعدّلي الكود في VS Code، افتحي Terminal وشغّلي: <code class="code-block" style="padding:4px 10px;display:inline;margin:4px 0">git status</code> — يُظهر الملفات التي عدّلتِها باللون الأحمر.</div></div>
+    </div>
+    <div class="gh-step">
+      <div class="gh-icon">2️⃣</div>
+      <div><div class="gh-title">أضيفي التعديلات للـ staging</div>
+      <div class="gh-desc"><div class="code-block">git add .    <span class="cg"># يضيف كل الملفات المعدّلة</span>
+<span class="cm"># أو لملف محدد:</span>
+git add src/pages/specialist/sessions.tsx</div></div></div>
+    </div>
+    <div class="gh-step">
+      <div class="gh-icon">3️⃣</div>
+      <div><div class="gh-title">اكتبي رسالة وصف التعديل (commit)</div>
+      <div class="gh-desc"><div class="code-block">git commit -m "إضافة صفحة التغذية الراجعة للأخصائي"</div>اكتبي وصفاً واضحاً لما فعلتِه. هذا يُسجَّل في تاريخ المشروع.</div></div>
+    </div>
+    <div class="gh-step">
+      <div class="gh-icon">4️⃣</div>
+      <div><div class="gh-title">ارفعي للـ GitHub</div>
+      <div class="gh-desc"><div class="code-block">git push origin main</div>ستُطلب منك بيانات GitHub (username + Personal Access Token). بعد أول مرة يُحفظ تلقائياً.</div></div>
+    </div>
+  </div>
+
+  <br/>
+  <p class="lead" style="font-weight:700;">📥 كيف تحمّلين أحدث تعديلات زميلتك:</p>
+  <div class="gh-flow">
+    <div class="gh-step">
+      <div class="gh-icon">⬇️</div>
+      <div><div class="gh-title">سحب التعديلات من GitHub</div>
+      <div class="gh-desc"><div class="code-block">git pull origin main</div>هذا يُحدّث كودك المحلي بآخر تعديلات الفريق. افعليه دائماً قبل البدء بالعمل.</div></div>
+    </div>
+  </div>
+
+  <br/>
+  <p class="lead" style="font-weight:700;">⚠️ تعارض الكود (Merge Conflict):</p>
+  <div class="warn">إذا عدّلتِ أنتِ وزميلتك نفس الملف في نفس الوقت ورفعتِ، قد يظهر "Merge Conflict". VS Code يُظهره بألوان: أخضر = تعديلك، أزرق = تعديل زميلتك. اختاري أيهما تريدين الإبقاء أو ادمجي الاثنين يدوياً، ثم احفظي وكرّري خطوات add + commit + push.</div>
+
+  <br/>
+  <p class="lead" style="font-weight:700;">✨ نصائح للعمل الجماعي على GitHub:</p>
+  <div class="edit-card ec1" style="border-color:#7c3aed;">
+    <div class="edit-desc">
+      • <strong>قبل أي عمل:</strong> دائماً شغّلي <code>git pull</code> أولاً لتأخذي آحدث نسخة<br/>
+      • <strong>رسائل واضحة:</strong> اكتبي commit messages واضحة (ليس "edit" بل "إضافة التحقق من الصلاحيات في صفحة الجلسات")<br/>
+      • <strong>لا تعدّلي نفس الملف:</strong> تنسّقي مع زميلاتك — كل واحدة تعمل على صفحات مختلفة<br/>
+      • <strong>الـ Branches (اختياري):</strong> يمكن كل شخص يعمل على branch منفصل (مثل feature/sessions-page) ثم تدمجونها في main
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ 12. ACCOUNTS ══════════════ -->
+<div class="section" id="s12">
+  <div class="sec-header"><div class="sec-icon">👤</div><div class="sec-title c-dark">١٢. حسابات المستخدمين للتجربة</div></div>
+  <p class="lead">هذه الحسابات تُضاف تلقائياً عند تشغيل أمر seed:</p>
+  <table class="acc-table">
+    <thead><tr><th>الدور</th><th>اسم المستخدم</th><th>كلمة المرور</th><th>ما يراه عند الدخول</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge" style="background:#ebf4ff;color:#4c51bf;">🔑 Admin</span></td><td><strong>admin</strong></td><td>admin123</td><td>لوحة تحكم شاملة — كل شيء</td></tr>
+      <tr><td><span class="badge" style="background:#f0fff4;color:#276749;">🩺 Specialist</span></td><td><strong>specialist1</strong></td><td>spec123</td><td>أطفاله، جلساته، تمارينه، مواعيده</td></tr>
+      <tr><td><span class="badge" style="background:#fffbeb;color:#d97706;">👨‍👩‍👦 Parent</span></td><td><strong>parent1</strong></td><td>parent123</td><td>ملف طفله، مواعيده، جلساته</td></tr>
+      <tr><td><span class="badge" style="background:#fef3f2;color:#e53e3e;">🧒 Child</span></td><td><strong>child1</strong></td><td>child123</td><td>تمارينه ونجومه وإنجازاته</td></tr>
+    </tbody>
+  </table>
+  <br/>
+  <p class="lead"><strong>لإضافة مستخدم جديد</strong> دخّلي كـ admin ← إدارة المستخدمين ← إضافة مستخدم جديد. أو عدّلي ملف <code>lib/db/src/seed.ts</code> وأضيفي المستخدم فيه وشغّلي seed مجدداً.</p>
+  <div class="tip">عند العرض التقديمي، سجّلي الدخول من أربع نوافذ (أو أربعة متصفحات) بكل دور لتُظهري الفرق بين واجهات الأدوار الأربعة في نفس الوقت — يُضيف أثراً احترافياً!</div>
+</div>
+
+<!-- ══════════════ 13. ENV ══════════════ -->
+<div class="section" id="s13">
+  <div class="sec-header"><div class="sec-icon">🔐</div><div class="sec-title c-purple">١٣. ملف الـ .env — متغيرات البيئة كاملة</div></div>
+
+  <p class="lead"><strong>متغيرات البيئة (Environment Variables)</strong> هي معلومات سرية أو إعدادات خاصة ببيئة التشغيل. لا تُكتب مباشرة في الكود لأن ذلك خطر — بدلاً من ذلك تُحفظ في ملف <code>.env</code> أو تُضبط كـ variables في النظام.</p>
+
+  <div class="warn">ملف <code>.env</code> لا يُرفع أبداً على GitHub — لأنه يحتوي على معلومات سرية (كلمات مرور، مفاتيح). الملف <code>.gitignore</code> في المشروع يمنع رفعه تلقائياً.</div>
+
+  <br/>
+  <p class="lead" style="font-weight:700;font-size:16px;">📋 كل متغيرات المشروع وشرحها:</p>
+
+  <p style="font-size:13px;color:#553c9a;font-weight:700;margin:8px 0 4px;">⚙️ متغيرات السيرفر — artifacts/api-server</p>
+  <table class="env-table">
+    <thead><tr><th>اسم المتغير</th><th>القيمة المحلية</th><th>الشرح</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="var-name">DATABASE_URL</span></td>
+        <td><span class="var-val">postgres://postgres:123456<br/>@localhost:5432/speech_clinic</span></td>
+        <td class="var-desc">رابط الاتصال بقاعدة البيانات.<br/>الصيغة: <code>postgres://[مستخدم]:[كلمة مرور]@[عنوان]:[port]/[اسم قاعدة البيانات]</code></td>
+      </tr>
+      <tr>
+        <td><span class="var-name">SESSION_SECRET</span></td>
+        <td><span class="var-val">my-super-secret-key-12345</span></td>
+        <td class="var-desc">مفتاح تشفير الـ session (جلسة المستخدم). يجب أن يكون طويلاً وعشوائياً ولا تشاركيه أحداً.</td>
+      </tr>
+      <tr>
+        <td><span class="var-name">PORT</span></td>
+        <td><span class="var-val">5000</span></td>
+        <td class="var-desc">رقم المنفذ الذي يعمل عليه السيرفر. القيمة المحلية الافتراضية: 5000.</td>
+      </tr>
+      <tr>
+        <td><span class="var-name">NODE_ENV</span></td>
+        <td><span class="var-val">development</span></td>
+        <td class="var-desc"><strong>development</strong> = وضع التطوير (console logs، أخطاء تفصيلية)<br/><strong>production</strong> = وضع الإنتاج (أسرع، بدون أخطاء تفصيلية)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br/>
+  <p style="font-size:13px;color:#2563eb;font-weight:700;margin:8px 0 4px;">🖥️ متغيرات الواجهة — artifacts/speech-clinic</p>
+  <table class="env-table">
+    <thead><tr><th>اسم المتغير</th><th>القيمة المحلية</th><th>الشرح</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="var-name">PORT</span></td>
+        <td><span class="var-val">5173</span></td>
+        <td class="var-desc">رقم المنفذ لسيرفر Vite (الواجهة). القيمة الافتراضية لـ Vite هي 5173.</td>
+      </tr>
+      <tr>
+        <td><span class="var-name">BASE_PATH</span></td>
+        <td><span class="var-val">/</span></td>
+        <td class="var-desc">المسار الأساسي للتطبيق. محلياً يكون <code>/</code> دائماً.</td>
+      </tr>
+      <tr>
+        <td><span class="var-name">API_URL</span></td>
+        <td><span class="var-val">http://localhost:5000</span></td>
+        <td class="var-desc">عنوان السيرفر الذي تتصل به الواجهة. يجب أن يتطابق مع PORT السيرفر.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br/>
+  <p class="lead" style="font-weight:700;font-size:16px;">📁 كيف تضبطين المتغيرات؟</p>
+
+  <div class="edit-card ec3">
+    <div class="edit-title">طريقة 1 — PowerShell (Windows) — قبل كل تشغيل</div>
+    <div class="edit-desc">
+      <div class="code-block" style="font-size:12px;direction:ltr;text-align:left;">$env:DATABASE_URL="postgres://postgres:123456@localhost:5432/speech_clinic"
+$env:SESSION_SECRET="my-super-secret-key-12345"
+$env:PORT="5000"
+$env:NODE_ENV="development"
+pnpm --filter @workspace/api-server run dev</div>
+      تُضبط المتغيرات في نفس نافذة PowerShell قبل تشغيل الأمر. تُفقد عند إغلاق النافذة.
+    </div>
+  </div>
+
+  <div class="edit-card ec2">
+    <div class="edit-title">طريقة 2 — ملف .env.local (الأسهل والأريح)</div>
+    <div class="edit-desc">
+      أنشئي ملف جديد اسمه <strong>.env.local</strong> في جذر المشروع:
+      <div class="code-block" style="font-size:12px;direction:ltr;text-align:left;">DATABASE_URL=postgres://postgres:123456@localhost:5432/speech_clinic
+SESSION_SECRET=my-super-secret-key-12345
+PORT=5000
+NODE_ENV=development</div>
+      هذا الملف يُقرأ تلقائياً عند تشغيل الكود. <strong>لا ترفعيه على GitHub!</strong> تأكدي أن <code>.env.local</code> مذكور في ملف <code>.gitignore</code>.
+    </div>
+  </div>
+
+  <br/>
+  <p class="lead" style="font-weight:700;font-size:16px;">🔍 كيف يقرأ الكود هذه المتغيرات؟</p>
+  <div style="background:#1a202c;border-radius:14px;padding:20px;font-family:monospace;font-size:12.5px;line-height:2;direction:ltr;text-align:left;margin:12px 0;overflow-x:auto;white-space:pre;">
+<span style="color:#68d391;">// في كود السيرفر (TypeScript/Node.js)</span>
+<span style="color:#f6ad55;">const</span> port   = process.env.<span style="color:#fbd38d;">PORT</span>           || <span style="color:#90cdf4;">'5000'</span>;
+<span style="color:#f6ad55;">const</span> dbUrl  = process.env.<span style="color:#fbd38d;">DATABASE_URL</span>;
+<span style="color:#f6ad55;">const</span> secret = process.env.<span style="color:#fbd38d;">SESSION_SECRET</span>;
+<span style="color:#68d391;">// process.env = الكائن الذي يحتوي كل المتغيرات</span>
+<span style="color:#68d391;">// || "إذا كان فارغاً استخدم القيمة الافتراضية"</span></div>
+
+  <div class="tip">إذا نسيتِ ضبط <code>DATABASE_URL</code> ستظهر رسالة: <strong>"connection refused"</strong> أو <strong>"DATABASE_URL is not defined"</strong>. تأكدي من ضبط كل المتغيرات قبل تشغيل السيرفر.</div>
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <div class="doc-footer-title">🎓 مشروع تخرج · عيادة النطق · Speech Clinic</div>
+  <div class="doc-footer-sub">جامعة العلوم والتكنولوجيا الأردنية · كلية تقنية المعلومات والحاسوب · قسم علم الحاسوب · 2025–2026</div>
+  <div style="margin-top:10px;font-size:12px;opacity:.65;">أماني السواعي (160683) · سرى الوديان (136977) · توقة الخطيب (158062)</div>
+</div>
+
+</div>
+</body>
+</html>

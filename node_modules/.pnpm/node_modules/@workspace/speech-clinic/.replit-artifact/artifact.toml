@@ -1,0 +1,32 @@
+kind = "web"
+previewPath = "/"
+title = "Speech Clinic"
+version = "1.0.0"
+id = "artifacts/speech-clinic"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23631
+
+[services.development]
+run = "pnpm --filter @workspace/speech-clinic run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/speech-clinic", "run", "build" ]
+publicDir = "artifacts/speech-clinic/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23631"
+BASE_PATH = "/"
+API_URL = "http://localhost:8080"
