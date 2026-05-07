@@ -27,7 +27,7 @@ import ParentAppointments from "@/pages/parent/appointments";
 
 import ChildDashboard from "@/pages/child";
 import ChildExercises from "@/pages/child/exercises";
-
+import AchievementsPage from "@/pages/shared/achievements";
 import SettingsPage from "@/pages/shared/settings";
 import MessagesPage from "@/pages/shared/messages";
 
@@ -82,7 +82,9 @@ function Router() {
       {/* Child */}
       <Route path="/child"><ProtectedRoute component={ChildDashboard} allowedRoles={["child"]} /></Route>
       <Route path="/child/exercises"><ProtectedRoute component={ChildExercises} allowedRoles={["child"]} /></Route>
-
+<Route path="/child/achievements">
+  <ProtectedRoute component={AchievementsPage} allowedRoles={["child"]} />
+</Route>
       {/* Shared */}
       <Route path="/messages"><ProtectedRoute component={MessagesPage} allowedRoles={["admin", "specialist", "parent"]} /></Route>
       <Route path="/settings"><ProtectedRoute component={SettingsPage} /></Route>

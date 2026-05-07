@@ -57194,6 +57194,16 @@ router9.post("/progress", async (req, res) => {
     date: date6,
     notes: notes ?? null
   }).returning();
+  const [child] = await db.select().from(childrenTable).where(eq(childrenTable.id, childId));
+  if (child && completed) {
+    await db.update(childrenTable).set({
+      totalSessions: (child.totalSessions ?? 0) + 1,
+      progressLevel: (child.progressLevel ?? 0) + score
+    }).where(eq(childrenTable.id, childId));
+  }
+  if (child && child.progressLevel + score >= 20) {
+    console.log("\u{1F389} Achievement unlocked (level up ready)");
+  }
   res.status(201).json(await buildProgressResponse(record2));
 });
 var progress_default = router9;
@@ -57341,8 +57351,20 @@ router10.get("/dashboard/child/:childId", async (req, res) => {
     res.status(404).json({ error: "Child not found" });
     return;
   }
-  const allExercises = await db.select().from(exercisesTable).where(eq(exercisesTable.minAge, Math.min(child.age, 5)));
-  const todayExercises = allExercises.slice(0, 3).map((e) => ({
+  const allExercises = await db.select().from(exercisesTable).where(and(lte(exercisesTable.minAge, child.age), gte(exercisesTable.maxAge, child.age)));
+  const dateSeed = parseInt(today.replace(/-/g, ""), 10) + childId;
+  function seededShuffle(arr, seed) {
+    const a = [...arr];
+    let s = seed;
+    for (let i = a.length - 1; i > 0; i--) {
+      s = s * 1103515245 + 12345 & 2147483647;
+      const j = s % (i + 1);
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  const shuffled = seededShuffle(allExercises, dateSeed);
+  const todayExercises = shuffled.slice(0, 3).map((e) => ({
     id: e.id,
     title: e.title,
     description: e.description,
@@ -57477,8 +57499,14 @@ router12.post("/achievements/check/:childId", async (req, res) => {
     return;
   }
   const allProgress = await db.select().from(progressTable).where(eq(progressTable.childId, childId));
+  const DAILY_LIMIT = 3;
+  const dateGroups = /* @__PURE__ */ new Map();
+  for (const p of allProgress.filter((p2) => p2.completed)) {
+    dateGroups.set(p.date, (dateGroups.get(p.date) ?? 0) + 1);
+  }
+  const daysCompleted = [...dateGroups.values()].filter((cnt) => cnt >= DAILY_LIMIT).length;
   const completedCount = allProgress.filter((p) => p.completed).length;
-  const allAchievements = await db.select().from(achievementsTable);
+  const allAchievements = await db.select().from(achievementsTable).orderBy(achievementsTable.threshold);
   const earned = await db.select().from(childAchievementsTable).where(eq(childAchievementsTable.childId, childId));
   const earnedIds = new Set(earned.map((e) => e.achievementId));
   const newlyEarned = [];
@@ -57486,11 +57514,12 @@ router12.post("/achievements/check/:childId", async (req, res) => {
     if (earnedIds.has(ach.id)) continue;
     let qualifies = false;
     if (ach.category === "sessions" && child.totalSessions >= ach.threshold) qualifies = true;
-    if (ach.category === "exercises" && completedCount >= ach.threshold) qualifies = true;
+    if (ach.category === "exercises" && daysCompleted >= ach.threshold) qualifies = true;
     if (ach.category === "score" && allProgress.some((p) => p.score >= ach.threshold)) qualifies = true;
     if (qualifies) {
       await db.insert(childAchievementsTable).values({ childId, achievementId: ach.id });
       newlyEarned.push(ach);
+      break;
     }
   }
   res.json({ newlyEarned });

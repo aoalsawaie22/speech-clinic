@@ -52,7 +52,6 @@ function playSound(name: SoundName) {
         setTimeout(() => createTone(ctx, 1046, 0.25, "sine", 0.22), 270);
         break;
       case "achievement":
-        // Big fanfare
         const notes = [523, 659, 784, 1046, 784, 1046, 1318];
         notes.forEach((n, i) => setTimeout(() => createTone(ctx, n, 0.15, "triangle", 0.2), i * 80));
         break;
@@ -153,7 +152,6 @@ export async function hasVoiceFor(lang: "ar" | "en"): Promise<boolean> {
   return voices.some(v => v.lang.toLowerCase().startsWith(target));
 }
 
-// Speaks one utterance and returns a promise that resolves when speech ends
 // Global controller for pause/resume/stop across sequences
 const speechCtrl = {
   paused: false,
@@ -177,10 +175,10 @@ export function stopSpeech() {
 }
 
 // Speaks one utterance and returns a promise that resolves when speech ends
-export async function speak(text: string, lang: "ar" | "en" = "ar"): Promise<void> {
+export async function speak(text: string, lang: "ar" | "en" = "ar", rate?: number): Promise<void> {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
   try { window.speechSynthesis.cancel(); } catch {}
-  await new Promise(r => setTimeout(r, 60));
+  await new Promise(r => setTimeout(r, 80));
   const voices = await getVoices();
   const voice = pickVoice(voices, lang);
 
@@ -188,8 +186,9 @@ export async function speak(text: string, lang: "ar" | "en" = "ar"): Promise<voi
     try {
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = lang === "ar" ? "ar-SA" : "en-US";
-      utter.rate = lang === "ar" ? 0.8 : 0.95;
-      utter.pitch = 1.1;
+      // أبطأ للعربية حتى يفهم الطفل جيداً
+      utter.rate = rate ?? (lang === "ar" ? 0.7 : 0.9);
+      utter.pitch = lang === "ar" ? 1.0 : 1.1;
       utter.volume = 1;
       if (voice) utter.voice = voice;
       let done = false;
@@ -197,7 +196,8 @@ export async function speak(text: string, lang: "ar" | "en" = "ar"): Promise<voi
       utter.onend = finish;
       utter.onerror = finish;
       window.speechSynthesis.speak(utter);
-      setTimeout(finish, Math.max(2500, text.length * 120));
+      // وقت أمان أطول للنص العربي (180ms لكل حرف، حد أدنى 3 ثواني)
+      setTimeout(finish, Math.max(3000, text.length * 180));
     } catch {
       resolve();
     }
@@ -232,5 +232,53 @@ export async function speakSequence(chunks: string[], lang: "ar" | "en" = "ar", 
     if (speechCtrl.stopped) return;
     await speak(c, lang);
     await waitWithControl(pauseMs);
+  }
+}
+
+// =========================================================
+// speakExercise: تدفق متخصص للتمارين الكلامية للأطفال
+// الترتيب: مقدمة → جملة ببطء → توقف → "كرّر معي" → جملة → توقف طويل للطفل
+// =========================================================
+export async function speakExercise(
+  chunks: string[],
+  lang: "ar" | "en",
+  onChunkStart?: (idx: number, total: number) => void
+): Promise<void> {
+  speechCtrl.stopped = false;
+  speechCtrl.paused = false;
+
+  const repeatCue = lang === "ar" ? "كرّر معي" : "Now you try";
+  const wellDone   = lang === "ar" ? "ممتاز!" : "Well done!";
+
+  for (let i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i];
+    if (!chunk.trim()) continue;
+    if (speechCtrl.stopped) return;
+
+    onChunkStart?.(i, chunks.length);
+
+    // 1️⃣ قول الجملة ببطء (المعلم يقول)
+    await speak(chunk, lang, lang === "ar" ? 0.65 : 0.85);
+    await waitWithControl(600);
+    if (speechCtrl.stopped) return;
+
+    // 2️⃣ "كرّر معي"
+    await speak(repeatCue, lang, lang === "ar" ? 0.8 : 0.9);
+    await waitWithControl(400);
+    if (speechCtrl.stopped) return;
+
+    // 3️⃣ إعادة الجملة مرة ثانية (أبطأ)
+    await speak(chunk, lang, lang === "ar" ? 0.6 : 0.8);
+    if (speechCtrl.stopped) return;
+
+    // 4️⃣ توقف طويل ← وقت الطفل للتكرار (2.5 ثانية)
+    await waitWithControl(2500);
+    if (speechCtrl.stopped) return;
+
+    // 5️⃣ "ممتاز" بين الأجزاء (مش بعد آخر جزء)
+    if (i < chunks.length - 1) {
+      await speak(wellDone, lang, 0.9);
+      await waitWithControl(500);
+    }
   }
 }

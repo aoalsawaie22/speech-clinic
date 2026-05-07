@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { eq, count, avg } from "drizzle-orm";
+import { eq, count, avg, and, lte, gte } from "drizzle-orm";
 import { db, usersTable, specialistsTable, childrenTable, appointmentsTable, sessionsTable, exercisesTable, progressTable } from "@workspace/db";
 
 const router: IRouter = Router();
@@ -161,8 +161,25 @@ router.get("/dashboard/child/:childId", async (req, res): Promise<void> => {
     return;
   }
 
-  const allExercises = await db.select().from(exercisesTable).where(eq(exercisesTable.minAge, Math.min(child.age, 5)));
-  const todayExercises = allExercises.slice(0, 3).map(e => ({
+  // جلب كل التمارين المناسبة لعمر الطفل (minAge <= عمر الطفل <= maxAge)
+  const allExercises = await db.select().from(exercisesTable)
+    .where(and(lte(exercisesTable.minAge, child.age), gte(exercisesTable.maxAge, child.age)));
+
+  // خلط بناءً على التاريخ + رقم الطفل → نفس اليوم = نفس التمارين، اليوم التالي = تمارين مختلفة
+  const dateSeed = parseInt(today.replace(/-/g, ""), 10) + childId;
+  function seededShuffle<T>(arr: T[], seed: number): T[] {
+    const a = [...arr];
+    let s = seed;
+    for (let i = a.length - 1; i > 0; i--) {
+      s = (s * 1103515245 + 12345) & 0x7fffffff;
+      const j = s % (i + 1);
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  const shuffled = seededShuffle(allExercises, dateSeed);
+
+  const todayExercises = shuffled.slice(0, 3).map(e => ({
     id: e.id, title: e.title, description: e.description, category: e.category, difficulty: e.difficulty,
     minAge: e.minAge, maxAge: e.maxAge, instructions: e.instructions, duration: e.duration, emoji: e.emoji,
     createdAt: e.createdAt.toISOString(),

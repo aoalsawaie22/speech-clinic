@@ -59,24 +59,40 @@ router.post("/achievements/check/:childId", async (req, res): Promise<void> => {
     res.status(404).json({ error: "Child not found" });
     return;
   }
+
   const allProgress = await db.select().from(progressTable).where(eq(progressTable.childId, childId));
+
+  // عدد الأيام التي أكمل فيها الطفل 3 تمارين (الحد اليومي)
+  const DAILY_LIMIT = 3;
+  const dateGroups = new Map<string, number>();
+  for (const p of allProgress.filter(p => p.completed)) {
+    dateGroups.set(p.date, (dateGroups.get(p.date) ?? 0) + 1);
+  }
+  const daysCompleted = [...dateGroups.values()].filter(cnt => cnt >= DAILY_LIMIT).length;
+
   const completedCount = allProgress.filter(p => p.completed).length;
-  const allAchievements = await db.select().from(achievementsTable);
+
+  // جلب الإنجازات مرتبة بالـ threshold (الأسهل أولاً)
+  const allAchievements = await db.select().from(achievementsTable).orderBy(achievementsTable.threshold);
   const earned = await db.select().from(childAchievementsTable).where(eq(childAchievementsTable.childId, childId));
   const earnedIds = new Set(earned.map(e => e.achievementId));
 
   const newlyEarned: typeof allAchievements = [];
+
   for (const ach of allAchievements) {
     if (earnedIds.has(ach.id)) continue;
     let qualifies = false;
     if (ach.category === "sessions" && child.totalSessions >= ach.threshold) qualifies = true;
-    if (ach.category === "exercises" && completedCount >= ach.threshold) qualifies = true;
+    // إنجازات التمارين تُفتح بعد إكمال عدد من الأيام اليومية الكاملة
+    if (ach.category === "exercises" && daysCompleted >= ach.threshold) qualifies = true;
     if (ach.category === "score" && allProgress.some(p => p.score >= ach.threshold)) qualifies = true;
     if (qualifies) {
       await db.insert(childAchievementsTable).values({ childId, achievementId: ach.id });
       newlyEarned.push(ach);
+      break; // انجاز واحد فقط بكل مرة
     }
   }
+
   res.json({ newlyEarned });
 });
 
