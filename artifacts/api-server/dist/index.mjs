@@ -56697,15 +56697,24 @@ router3.post("/users", async (req, res) => {
     res.status(400).json({ error: "Missing required fields" });
     return;
   }
-  const [user] = await db.insert(usersTable).values({ name, email: email3, password, role, phone: phone ?? null }).returning();
-  res.status(201).json({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    phone: user.phone ?? null,
-    createdAt: user.createdAt.toISOString()
-  });
+  const [existing] = await db.select().from(usersTable).where(eq(usersTable.email, email3));
+  if (existing) {
+    res.status(400).json({ error: "\u0647\u0630\u0627 \u0627\u0644\u0625\u064A\u0645\u064A\u0644 \u0645\u0633\u062A\u062E\u062F\u0645 \u0645\u0633\u0628\u0642\u0627\u064B \u2014 \u0627\u062E\u062A\u0631 \u0625\u064A\u0645\u064A\u0644\u0627\u064B \u0622\u062E\u0631" });
+    return;
+  }
+  try {
+    const [user] = await db.insert(usersTable).values({ name, email: email3, password, role, phone: phone ?? null }).returning();
+    res.status(201).json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      phone: user.phone ?? null,
+      createdAt: user.createdAt.toISOString()
+    });
+  } catch {
+    res.status(500).json({ error: "\u062D\u062F\u062B \u062E\u0637\u0623 \u0623\u062B\u0646\u0627\u0621 \u0625\u0646\u0634\u0627\u0621 \u0627\u0644\u062D\u0633\u0627\u0628" });
+  }
 });
 router3.get("/users/:id", async (req, res) => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;

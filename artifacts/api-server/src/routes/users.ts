@@ -23,15 +23,26 @@ router.post("/users", async (req, res): Promise<void> => {
     return;
   }
 
-  const [user] = await db.insert(usersTable).values({ name, email, password, role, phone: phone ?? null }).returning();
-  res.status(201).json({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    phone: user.phone ?? null,
-    createdAt: user.createdAt.toISOString(),
-  });
+  // Check duplicate email first
+  const [existing] = await db.select().from(usersTable).where(eq(usersTable.email, email));
+  if (existing) {
+    res.status(400).json({ error: "هذا الإيميل مستخدم مسبقاً — اختر إيميلاً آخر" });
+    return;
+  }
+
+  try {
+    const [user] = await db.insert(usersTable).values({ name, email, password, role, phone: phone ?? null }).returning();
+    res.status(201).json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      phone: user.phone ?? null,
+      createdAt: user.createdAt.toISOString(),
+    });
+  } catch {
+    res.status(500).json({ error: "حدث خطأ أثناء إنشاء الحساب" });
+  }
 });
 
 router.get("/users/:id", async (req, res): Promise<void> => {

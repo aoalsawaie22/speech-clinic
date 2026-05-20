@@ -79,9 +79,7 @@ function playSound(name: SoundName) {
     }
 
     setTimeout(() => ctx.close(), 1500);
-  } catch (_e) {
-    // ignore
-  }
+  } catch (_e) {}
 }
 
 export function SoundProvider({ children }: { children: ReactNode }) {
@@ -119,7 +117,6 @@ export function useSounds(): SoundCtx {
   return ctx;
 }
 
-// Wait for voices to be loaded (some browsers load them asynchronously)
 function getVoices(): Promise<SpeechSynthesisVoice[]> {
   return new Promise((resolve) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
@@ -152,7 +149,6 @@ export async function hasVoiceFor(lang: "ar" | "en"): Promise<boolean> {
   return voices.some(v => v.lang.toLowerCase().startsWith(target));
 }
 
-// Global controller for pause/resume/stop across sequences
 const speechCtrl = {
   paused: false,
   stopped: false,
@@ -174,7 +170,6 @@ export function stopSpeech() {
   try { window.speechSynthesis.cancel(); } catch {}
 }
 
-// Speaks one utterance and returns a promise that resolves when speech ends
 export async function speak(text: string, lang: "ar" | "en" = "ar", rate?: number): Promise<void> {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
   try { window.speechSynthesis.cancel(); } catch {}
@@ -186,8 +181,8 @@ export async function speak(text: string, lang: "ar" | "en" = "ar", rate?: numbe
     try {
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = lang === "ar" ? "ar-SA" : "en-US";
-      // أبطأ للعربية حتى يفهم الطفل جيداً
-      utter.rate = rate ?? (lang === "ar" ? 0.7 : 0.9);
+      // بطيء جداً للأطفال
+      utter.rate = rate ?? (lang === "ar" ? 0.6 : 0.85);
       utter.pitch = lang === "ar" ? 1.0 : 1.1;
       utter.volume = 1;
       if (voice) utter.voice = voice;
@@ -196,15 +191,27 @@ export async function speak(text: string, lang: "ar" | "en" = "ar", rate?: numbe
       utter.onend = finish;
       utter.onerror = finish;
       window.speechSynthesis.speak(utter);
-      // وقت أمان أطول للنص العربي (180ms لكل حرف، حد أدنى 3 ثواني)
-      setTimeout(finish, Math.max(3000, text.length * 180));
+      setTimeout(finish, Math.max(4000, text.length * 220));
     } catch {
       resolve();
     }
   });
 }
 
-// Cancellable wait that respects pause/stop
+// نغمة تنبيه لطيفة تدل الطفل أن دوره للنطق
+function playChildCueTone() {
+  try {
+    const Ctx = (window.AudioContext || (window as any).webkitAudioContext);
+    if (!Ctx) return;
+    const ctx = new Ctx();
+    // نغمتان تصاعديتان لطيفتان
+    createTone(ctx, 600, 0.12, "sine", 0.13);
+    setTimeout(() => createTone(ctx, 900, 0.15, "sine", 0.15), 130);
+    setTimeout(() => ctx.close(), 1000);
+  } catch {}
+}
+
+// انتظار مع دعم الإيقاف المؤقت
 async function waitWithControl(ms: number) {
   const step = 100;
   let elapsed = 0;
@@ -219,25 +226,16 @@ async function waitWithControl(ms: number) {
   }
 }
 
-// Speak multiple chunks in sequence with pauses (supports pause/resume/stop)
-export async function speakSequence(chunks: string[], lang: "ar" | "en" = "ar", pauseMs = 700): Promise<void> {
-  speechCtrl.stopped = false;
-  speechCtrl.paused = false;
-  for (const c of chunks) {
-    if (!c.trim()) continue;
-    if (speechCtrl.stopped) return;
-    while (speechCtrl.paused && !speechCtrl.stopped) {
-      await new Promise(r => setTimeout(r, 150));
-    }
-    if (speechCtrl.stopped) return;
-    await speak(c, lang);
-    await waitWithControl(pauseMs);
-  }
-}
-
 // =========================================================
-// speakExercise: تدفق متخصص للتمارين الكلامية للأطفال
-// الترتيب: مقدمة → جملة ببطء → توقف → "كرّر معي" → جملة → توقف طويل للطفل
+// speakExercise — تدفق النطق للأطفال
+//
+// لكل كلمة/جملة:
+//   1. المعلم يقول الكلمة ببطء شديد
+//   2. توقف قصير
+//   3. "كرّر معي" + نغمة تنبيه
+//   4. المعلم يعيد الكلمة مرة ثانية ببطء
+//   5. توقف طويل (5 ثوانٍ) — وقت الطفل للنطق
+//   6. "ممتاز" بين الكلمات
 // =========================================================
 export async function speakExercise(
   chunks: string[],
@@ -248,37 +246,40 @@ export async function speakExercise(
   speechCtrl.paused = false;
 
   const repeatCue = lang === "ar" ? "كرّر معي" : "Now you try";
-  const wellDone   = lang === "ar" ? "ممتاز!" : "Well done!";
+  const wellDone  = lang === "ar" ? "ممتاز" : "Well done";
 
   for (let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i];
     if (!chunk.trim()) continue;
     if (speechCtrl.stopped) return;
 
+    // إشعار الواجهة بالكلمة الحالية
     onChunkStart?.(i, chunks.length);
 
-    // 1️⃣ قول الجملة ببطء (المعلم يقول)
-    await speak(chunk, lang, lang === "ar" ? 0.65 : 0.85);
-    await waitWithControl(600);
+    // 1️⃣ المعلم يقول الكلمة ببطء شديد (rate 0.55)
+    await speak(chunk, lang, 0.55);
+    await waitWithControl(700);
     if (speechCtrl.stopped) return;
 
-    // 2️⃣ "كرّر معي"
-    await speak(repeatCue, lang, lang === "ar" ? 0.8 : 0.9);
-    await waitWithControl(400);
+    // 2️⃣ "كرّر معي" + نغمة تنبيه للطفل
+    playChildCueTone();
+    await waitWithControl(300);
+    await speak(repeatCue, lang, 0.75);
+    await waitWithControl(500);
     if (speechCtrl.stopped) return;
 
-    // 3️⃣ إعادة الجملة مرة ثانية (أبطأ)
-    await speak(chunk, lang, lang === "ar" ? 0.6 : 0.8);
+    // 3️⃣ المعلم يعيد الكلمة مرة ثانية أبطأ
+    await speak(chunk, lang, 0.5);
     if (speechCtrl.stopped) return;
 
-    // 4️⃣ توقف طويل ← وقت الطفل للتكرار (2.5 ثانية)
-    await waitWithControl(2500);
+    // 4️⃣ صمت 5 ثوانٍ — وقت الطفل للنطق
+    await waitWithControl(5000);
     if (speechCtrl.stopped) return;
 
-    // 5️⃣ "ممتاز" بين الأجزاء (مش بعد آخر جزء)
+    // 5️⃣ "ممتاز" بين الكلمات فقط (مش بعد الأخيرة)
     if (i < chunks.length - 1) {
-      await speak(wellDone, lang, 0.9);
-      await waitWithControl(500);
+      await speak(wellDone, lang, 0.8);
+      await waitWithControl(800);
     }
   }
 }
